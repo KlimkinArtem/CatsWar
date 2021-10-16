@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Misc/OutputDeviceNull.h"
 #include "CatsWarCharacter.generated.h"
 
 DECLARE_DELEGATE_OneParam(FShakeDelegate, float)
@@ -108,6 +109,8 @@ public:
 	UFUNCTION()
 	void SpeedBoost();
 
+	UPROPERTY(EditDefaultsOnly, Category= "Weapons")
+	TArray<TSubclassOf<AActor>> Weapons;
 	
 
 private:
@@ -124,6 +127,9 @@ private:
 	void Debug();
 
 	void Boost(EBoost BOOST);
+
+	bool bMaxSpeed = false;
+	FOutputDeviceNull ar;
 	
 };
 

@@ -142,6 +142,10 @@ void ACatsWarCharacter::CameraSake(float Scale)
 
 void ACatsWarCharacter::SetMaxWalkSpeed(float Speed)
 {
+	if(bMaxSpeed)
+	{
+		return;
+	}
 	GetCharacterMovement()->MaxWalkSpeed = Speed;
 }
 
@@ -165,7 +169,7 @@ void ACatsWarCharacter::SpeedBoost()
 void ACatsWarCharacter::Boost(EBoost BOOST)
 {
 	GetWorldTimerManager().SetTimer(MemberTimerHandle, this, &ACatsWarCharacter::RepeatingFunction, 1.0f, true, 0.f);
-	FOutputDeviceNull ar;
+	
 	bBoost = true;
 	//float RandomVelocity = FMath::RandRange(800.f, 1200.f);
 	
@@ -180,7 +184,8 @@ void ACatsWarCharacter::Boost(EBoost BOOST)
 			bWasInvisible = true;
 			break;
 		case SPEED:
-			GetCharacterMovement()->MaxWalkSpeed = 1200.f;
+			SetMaxWalkSpeed(1200.f);
+			bMaxSpeed = true;
 			break;
 			
 	}
@@ -205,15 +210,15 @@ void ACatsWarCharacter::RepeatingFunction()
 
 void ACatsWarCharacter::RestToDefaultParameters()
 {
+	bMaxSpeed = false;
 	if(bWasInvisible)
 	{
-		FOutputDeviceNull ar;
 		this->CallFunctionByNameWithArguments(TEXT("SetRandomMaterial"), ar, NULL, true);
 		bWasInvisible = false;
 	}
 	
 	GetCharacterMovement()->JumpZVelocity = 600.f;
-	GetCharacterMovement()->MaxWalkSpeed = 150.f;
+	SetMaxWalkSpeed(150.f);
 	bBoost = false;
 	CountTime = 0;
 }

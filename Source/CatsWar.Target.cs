@@ -14,5 +14,3 @@ public class CatsWarTarget : TargetRules
 }
 
 
-
-//git

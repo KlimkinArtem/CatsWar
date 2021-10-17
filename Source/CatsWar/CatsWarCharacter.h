@@ -3,13 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "WPistol.h"
+//#include "WPistol.h"
 #include "GameFramework/Character.h"
 #include "Misc/OutputDeviceNull.h"
 #include "CatsWarCharacter.generated.h"
 
 DECLARE_DELEGATE_OneParam(FShakeDelegate, float)
 DECLARE_DELEGATE_OneParam(FMaxSpeedDelegate, float)
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FShootDelegate);
 
 enum EBoost
 {
@@ -55,8 +57,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseLookUpRate;
 
-
-
+	UPROPERTY(BlueprintAssignable)
+	FShootDelegate Shoot;
+	
 protected:
 	
 	/** Called for forwards/backward input */

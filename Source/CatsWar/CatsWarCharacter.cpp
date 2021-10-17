@@ -266,10 +266,16 @@ void ACatsWarCharacter::PistolAttack()
 {
 	//SomeClass* MyObject = NewObject<SomeClass>(ObjectClass);
 
-	AWPistol* Pistol = NewObject<AWPistol>(Weapon); 
-	Pistol->PrintDebugMessage("UREHTJHFDGJHGDFJS");
+	//AWPistol* Pistol = NewObject<AWPistol>(Weapon);
+
+	//AWPistol* Pistol = NewObject<AWPistol>(Weapon);
+	//FVector vector = Pistol->GetSocketLocation();
 	
-	PrintDebugMessage("PAF PAF");
+	//UE_LOG(LogTemp, Warning, TEXT("Current: %s"), *vector.ToString());
+
+	Shoot.Broadcast();
+
+	
 }
 
 void ACatsWarCharacter::Attack()

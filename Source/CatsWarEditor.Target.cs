@@ -12,3 +12,6 @@ public class CatsWarEditorTarget : TargetRules
 		ExtraModuleNames.Add("CatsWar");
 	}
 }
+
+
+//heh

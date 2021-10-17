@@ -130,6 +130,15 @@ private:
 
 	bool bMaxSpeed = false;
 	FOutputDeviceNull ar;
+
+
+	void Hand();
+	void Bat();
+	void Pistol();
+
+	/*void SpawnWeapon(FVector Location, FRotator Rotation, FName SocketName);
+	
+	AActor* Weapon;*/
 	
 };
 

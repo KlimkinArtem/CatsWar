@@ -67,6 +67,12 @@ void ACatsWarCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerI
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
 	PlayerInputComponent->BindAction("Debug", IE_Pressed, this, &ACatsWarCharacter::Debug);
+	
+	PlayerInputComponent->BindAction("Hand", IE_Pressed, this, &ACatsWarCharacter::Hand);
+	PlayerInputComponent->BindAction("Bat", IE_Pressed, this, &ACatsWarCharacter::Bat);
+	PlayerInputComponent->BindAction("Pistol", IE_Pressed, this, &ACatsWarCharacter::Pistol);
+	
+	PlayerInputComponent->BindAction("Pistol", IE_Pressed, this, &ACatsWarCharacter::Pistol);
 
 	PlayerInputComponent->BindAction<FMaxSpeedDelegate>("MaxSpeed", IE_Pressed, this, &ACatsWarCharacter::SetMaxWalkSpeed, 600.f);
 	PlayerInputComponent->BindAction<FMaxSpeedDelegate>("MaxSpeed", IE_Released, this, &ACatsWarCharacter::SetMaxWalkSpeed, 150.f);
@@ -191,6 +197,39 @@ void ACatsWarCharacter::Boost(EBoost BOOST)
 	}
 
 }
+
+void ACatsWarCharacter::Hand()
+{
+	
+}
+
+void ACatsWarCharacter::Bat()
+{
+	FVector Location = GetMesh()->GetSocketLocation("BatSocket");
+	FRotator Rotation = GetMesh()->GetSocketRotation("BatSocket");
+	
+	FActorSpawnParameters SpawnInfo;
+	FAttachmentTransformRules AttachRules = FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true);
+	
+	auto Weapon = GetWorld()->SpawnActor<AActor>(Weapons[0],Location, Rotation, SpawnInfo);
+	
+	Weapon->AttachToComponent(GetMesh(), AttachRules, TEXT("BatSocket"));
+}
+
+void ACatsWarCharacter::Pistol()
+{
+	
+}
+
+//void ACatsWarCharacter::SpawnWeapon(FVector Location, FRotator Rotation)
+//{
+//	FActorSpawnParameters SpawnInfo;
+//	FAttachmentTransformRules AttachRules = FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true);
+//	
+//	Weapon = GetWorld()->SpawnActor<AActor>(Weapons[0],Location, Rotation, SpawnInfo);
+//	
+//	Weapon->AttachToComponent(GetMesh(), AttachRules, TEXT("BatSocket"));
+//}
 
 
 void ACatsWarCharacter::RepeatingFunction()

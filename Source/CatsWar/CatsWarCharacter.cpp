@@ -72,7 +72,7 @@ void ACatsWarCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerI
 	PlayerInputComponent->BindAction("Bat", IE_Pressed, this, &ACatsWarCharacter::Bat);
 	PlayerInputComponent->BindAction("Pistol", IE_Pressed, this, &ACatsWarCharacter::Pistol);
 	
-	PlayerInputComponent->BindAction("Pistol", IE_Pressed, this, &ACatsWarCharacter::Pistol);
+	PlayerInputComponent->BindAction("Attack", IE_Pressed, this, &ACatsWarCharacter::Attack);
 
 	PlayerInputComponent->BindAction<FMaxSpeedDelegate>("MaxSpeed", IE_Pressed, this, &ACatsWarCharacter::SetMaxWalkSpeed, 600.f);
 	PlayerInputComponent->BindAction<FMaxSpeedDelegate>("MaxSpeed", IE_Released, this, &ACatsWarCharacter::SetMaxWalkSpeed, 150.f);
@@ -200,11 +200,12 @@ void ACatsWarCharacter::Boost(EBoost BOOST)
 
 void ACatsWarCharacter::Hand()
 {
-	
+	AttackType = HAND;
 }
 
 void ACatsWarCharacter::Bat()
 {
+	AttackType = BAT;
 	FVector Location = GetMesh()->GetSocketLocation("BatSocket");
 	FRotator Rotation = GetMesh()->GetSocketRotation("BatSocket");
 	
@@ -218,6 +219,24 @@ void ACatsWarCharacter::Bat()
 
 void ACatsWarCharacter::Pistol()
 {
+	AttackType = PISTOL;
+}
+
+void ACatsWarCharacter::Attack()
+{
+	
+	switch (AttackType)
+	{
+	case HAND:
+		CallFunctionByNameWithArguments(TEXT("HandAttack"), ar, NULL, true);
+		break;
+	case BAT:
+		CallFunctionByNameWithArguments(TEXT("BatAttack"), ar, NULL, true);
+		break;
+	case PISTOL:
+		CallFunctionByNameWithArguments(TEXT("PistolAttack"), ar, NULL, true);
+		break;
+	}
 	
 }
 

@@ -20,6 +20,13 @@ enum EBoost
 	DAMAGE,
 };
 
+enum EAttackType
+{
+	HAND,
+	BAT,
+	PISTOL,
+};
+
 UCLASS(config=Game)
 class ACatsWarCharacter : public ACharacter
 {
@@ -135,6 +142,9 @@ private:
 	void Hand();
 	void Bat();
 	void Pistol();
+	
+	void Attack();
+	EAttackType AttackType = EAttackType::HAND;
 
 	/*void SpawnWeapon(FVector Location, FRotator Rotation, FName SocketName);
 	

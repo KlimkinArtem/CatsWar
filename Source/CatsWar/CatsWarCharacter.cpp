@@ -201,25 +201,55 @@ void ACatsWarCharacter::Boost(EBoost BOOST)
 void ACatsWarCharacter::Hand()
 {
 	AttackType = HAND;
+
+	Weapon->Destroy();
+	
+	PrintDebugMessage("Hand");
 }
 
 void ACatsWarCharacter::Bat()
 {
 	AttackType = BAT;
+	
+	if (IsValid(Weapons[0]))
+	{
+		return;
+	}
+	
+	
 	FVector Location = GetMesh()->GetSocketLocation("BatSocket");
 	FRotator Rotation = GetMesh()->GetSocketRotation("BatSocket");
 	
-	FActorSpawnParameters SpawnInfo;
-	FAttachmentTransformRules AttachRules = FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true);
-	
-	auto Weapon = GetWorld()->SpawnActor<AActor>(Weapons[0],Location, Rotation, SpawnInfo);
-	
-	Weapon->AttachToComponent(GetMesh(), AttachRules, TEXT("BatSocket"));
+	SpawnWeapon(Location, Rotation, "BatSocket", 0);
 }
 
 void ACatsWarCharacter::Pistol()
 {
 	AttackType = PISTOL;
+	if (IsValid(Weapons[1]))
+	{
+		return;
+	}
+	
+
+	PrintDebugMessage("Pistol");
+}
+
+void ACatsWarCharacter::SpawnWeapon(FVector Location, FRotator Rotation, FString SocketName, int32 WeaponIndex)
+{
+	if(IsValid(Weapon))
+	{
+		Weapon->Destroy();
+	}
+	
+	FActorSpawnParameters SpawnInfo;
+	FAttachmentTransformRules AttachRules = FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true);
+	
+	Weapon = GetWorld()->SpawnActor<AActor>(Weapons[0],Location, Rotation, SpawnInfo);
+	
+	Weapon->AttachToComponent(GetMesh(), AttachRules, *SocketName);
+
+	PrintDebugMessage("SpawnWeapon");
 }
 
 void ACatsWarCharacter::Attack()
@@ -240,15 +270,7 @@ void ACatsWarCharacter::Attack()
 	
 }
 
-//void ACatsWarCharacter::SpawnWeapon(FVector Location, FRotator Rotation)
-//{
-//	FActorSpawnParameters SpawnInfo;
-//	FAttachmentTransformRules AttachRules = FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true);
-//	
-//	Weapon = GetWorld()->SpawnActor<AActor>(Weapons[0],Location, Rotation, SpawnInfo);
-//	
-//	Weapon->AttachToComponent(GetMesh(), AttachRules, TEXT("BatSocket"));
-//}
+
 
 
 void ACatsWarCharacter::RepeatingFunction()
@@ -283,7 +305,7 @@ void ACatsWarCharacter::RestToDefaultParameters()
 
 void ACatsWarCharacter::Debug()
 {
-	if(bBoost)
+	if(IsValid(Weapon))
 	{
 		PrintDebugMessage("true", 2.f, FColor::White);
 	}else

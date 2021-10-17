@@ -265,6 +265,9 @@ void ACatsWarCharacter::SpawnWeapon(FString SocketName, int32 WeaponIndex)
 void ACatsWarCharacter::PistolAttack()
 {
 	//SomeClass* MyObject = NewObject<SomeClass>(ObjectClass);
+
+	AWPistol* Pistol = NewObject<AWPistol>(Weapon); 
+	Pistol->PrintDebugMessage("UREHTJHFDGJHGDFJS");
 	
 	PrintDebugMessage("PAF PAF");
 }

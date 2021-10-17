@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "WPistol.h"
 #include "GameFramework/Character.h"
 #include "Misc/OutputDeviceNull.h"
 #include "CatsWarCharacter.generated.h"

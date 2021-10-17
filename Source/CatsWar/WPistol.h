@@ -19,11 +19,15 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	
 	UPROPERTY(EditAnywhere)
 	USkeletalMeshComponent* SkeletalMeshComponent;
+
+	void PrintDebugMessage(FString Message = "Hello", float TimeToDisplay = 1.f, FColor Color = FColor::Red);
+
 
 };

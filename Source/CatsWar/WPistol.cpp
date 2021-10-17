@@ -20,6 +20,11 @@ void AWPistol::BeginPlay()
 	
 }
 
+void AWPistol::PrintDebugMessage(FString Message, float TimeToDisplay, FColor Color)
+{
+	GEngine->AddOnScreenDebugMessage(-1, TimeToDisplay, Color, Message);
+}
+
 // Called every frame
 void AWPistol::Tick(float DeltaTime)
 {

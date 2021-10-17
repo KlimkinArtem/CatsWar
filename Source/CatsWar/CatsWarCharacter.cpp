@@ -207,7 +207,7 @@ void ACatsWarCharacter::Hand()
 		Weapon->Destroy();
 	}
 	
-	
+	bPistolMode = false;
 	PrintDebugMessage("Hand");
 }
 
@@ -235,17 +235,20 @@ void ACatsWarCharacter::Pistol()
 		return;
 	}
 	
-	SpawnWeapon("PistolSocket", 1);
 	
+	SpawnWeapon("PistolSocket", 1);
+	bPistolMode = true;
 }
 
 void ACatsWarCharacter::SpawnWeapon(FString SocketName, int32 WeaponIndex)
 {
+	
 	if(IsValid(Weapon))
 	{
-		
 		Weapon->Destroy();
 	}
+	bPistolMode = false;
+	
 	FVector Location = GetMesh()->GetSocketLocation(*SocketName);
 	FRotator Rotation = GetMesh()->GetSocketRotation(*SocketName);
 	
@@ -312,11 +315,7 @@ void ACatsWarCharacter::RestToDefaultParameters()
 
 void ACatsWarCharacter::Debug()
 {
-	if(IsValid(Weapon))
-	{
-		PrintDebugMessage(Weapon->GetName());
-	}
-	
+	bPistolMode ? PrintDebugMessage("true") : PrintDebugMessage("false");
 	
 	/*
 	if(IsValid(Weapon))

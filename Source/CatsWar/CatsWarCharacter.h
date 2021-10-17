@@ -54,6 +54,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseLookUpRate;
 
+
+
 protected:
 	
 	/** Called for forwards/backward input */
@@ -99,6 +101,11 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	float TimerEndTime = 15;
+
+	UPROPERTY(BlueprintReadOnly, Category="Animation mode")
+	bool bPistolMode = false;
+
+
 	
 public:
 	UFUNCTION()
@@ -118,7 +125,8 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category= "Weapons")
 	TArray<TSubclassOf<AActor>> Weapons;
-	
+
+
 
 private:
 
@@ -144,6 +152,7 @@ private:
 	void Bat();
 	void Pistol();
 	AActor* Weapon;
+	
 	
 	void Attack();
 	EAttackType AttackType = EAttackType::HAND;

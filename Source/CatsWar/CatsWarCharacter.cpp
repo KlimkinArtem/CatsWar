@@ -262,19 +262,27 @@ void ACatsWarCharacter::SpawnWeapon(FString SocketName, int32 WeaponIndex)
 	PrintDebugMessage("SpawnWeapon");
 }
 
+void ACatsWarCharacter::PistolAttack()
+{
+	//SomeClass* MyObject = NewObject<SomeClass>(ObjectClass);
+	
+	PrintDebugMessage("PAF PAF");
+}
+
 void ACatsWarCharacter::Attack()
 {
 	
 	switch (AttackType)
 	{
 	case HAND:
-		CallFunctionByNameWithArguments(TEXT("HandAttack"), ar, NULL, true);
+		CallFunctionByNameWithArguments(TEXT("HandAttackAnim"), ar, NULL, true);
 		break;
 	case BAT:
-		CallFunctionByNameWithArguments(TEXT("BatAttack"), ar, NULL, true);
+		CallFunctionByNameWithArguments(TEXT("BatAttackAnim"), ar, NULL, true);
 		break;
 	case PISTOL:
-		CallFunctionByNameWithArguments(TEXT("PistolAttack"), ar, NULL, true);
+		CallFunctionByNameWithArguments(TEXT("PistolAttackAnim"), ar, NULL, true);
+		PistolAttack();
 		break;
 	}
 	

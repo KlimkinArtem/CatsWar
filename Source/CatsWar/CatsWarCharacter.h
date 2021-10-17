@@ -152,6 +152,8 @@ private:
 	void Bat();
 	void Pistol();
 	AActor* Weapon;
+
+	void PistolAttack();
 	
 	
 	void Attack();

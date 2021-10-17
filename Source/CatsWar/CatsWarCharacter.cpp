@@ -202,7 +202,11 @@ void ACatsWarCharacter::Hand()
 {
 	AttackType = HAND;
 
-	Weapon->Destroy();
+	if(IsValid(Weapon))
+	{
+		Weapon->Destroy();
+	}
+	
 	
 	PrintDebugMessage("Hand");
 }
@@ -211,41 +215,44 @@ void ACatsWarCharacter::Bat()
 {
 	AttackType = BAT;
 	
-	if (IsValid(Weapons[0]))
+	if(IsValid(Weapon) && Weapon->ActorHasTag(TEXT("BAT")))
 	{
+		PrintDebugMessage("Bat no spawn");
 		return;
 	}
 	
+	SpawnWeapon("BatSocket", 0);
 	
-	FVector Location = GetMesh()->GetSocketLocation("BatSocket");
-	FRotator Rotation = GetMesh()->GetSocketRotation("BatSocket");
-	
-	SpawnWeapon(Location, Rotation, "BatSocket", 0);
 }
 
 void ACatsWarCharacter::Pistol()
 {
 	AttackType = PISTOL;
-	if (IsValid(Weapons[1]))
+	
+	if(IsValid(Weapon) && Weapon->ActorHasTag(TEXT("PISTOL")))
 	{
+		PrintDebugMessage("Pistol no spawn");
 		return;
 	}
 	
-
-	PrintDebugMessage("Pistol");
+	SpawnWeapon("PistolSocket", 1);
+	
 }
 
-void ACatsWarCharacter::SpawnWeapon(FVector Location, FRotator Rotation, FString SocketName, int32 WeaponIndex)
+void ACatsWarCharacter::SpawnWeapon(FString SocketName, int32 WeaponIndex)
 {
 	if(IsValid(Weapon))
 	{
+		
 		Weapon->Destroy();
 	}
+	FVector Location = GetMesh()->GetSocketLocation(*SocketName);
+	FRotator Rotation = GetMesh()->GetSocketRotation(*SocketName);
 	
 	FActorSpawnParameters SpawnInfo;
 	FAttachmentTransformRules AttachRules = FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true);
 	
-	Weapon = GetWorld()->SpawnActor<AActor>(Weapons[0],Location, Rotation, SpawnInfo);
+	Weapon = GetWorld()->SpawnActor<AActor>(Weapons[WeaponIndex],Location, Rotation, SpawnInfo);
 	
 	Weapon->AttachToComponent(GetMesh(), AttachRules, *SocketName);
 
@@ -307,12 +314,19 @@ void ACatsWarCharacter::Debug()
 {
 	if(IsValid(Weapon))
 	{
+		PrintDebugMessage(Weapon->GetName());
+	}
+	
+	
+	/*
+	if(IsValid(Weapon))
+	{
 		PrintDebugMessage("true", 2.f, FColor::White);
 	}else
 	{
 		PrintDebugMessage("false", 2.f, FColor::White);
 	}
-	
+	*/
 }
 
 

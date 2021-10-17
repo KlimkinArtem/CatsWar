@@ -139,7 +139,7 @@ private:
 	FOutputDeviceNull ar;
 
 
-	void SpawnWeapon(FVector Location, FRotator Rotation, FString SocketName, int32 WeaponIndex);
+	void SpawnWeapon(FString SocketName, int32 WeaponIndex);
 	void Hand();
 	void Bat();
 	void Pistol();

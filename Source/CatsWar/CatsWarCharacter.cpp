@@ -261,6 +261,8 @@ void ACatsWarCharacter::SpawnWeapon(FString SocketName, int32 WeaponIndex)
 	{
 		Weapon->Destroy();
 	}
+	
+	
 	bPistolMode = false;
 	
 	FVector Location = GetMesh()->GetSocketLocation(*SocketName);
@@ -308,13 +310,17 @@ void ACatsWarCharacter::PistolAttack()
 	FCollisionQueryParams CollisionParams;
 	CollisionParams.AddIgnoredActor(this);
 	
-	DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 3, 0, 2);
+	//DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 3, 0, 2);
 
-	bool bIsHit = GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECC_Visibility, CollisionParams);
+	bool bIsHit = GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECC_PhysicsBody, CollisionParams);
+	
 	if(bIsHit)
 	{
-		
-		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Green, FString::Printf(TEXT("The Component Being Hit is: %s"), *OutHit.GetActor()->GetName()));
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Bone is: %s"), *OutHit.BoneName.ToString()));
+
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Bone is: %s"), *OutHit.GetActor()->GetName()));
+
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("The Component Being Hit is: %s"), *OutHit.GetActor()->GetName()));
 	}
 }
 

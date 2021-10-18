@@ -249,9 +249,7 @@ void ACatsWarCharacter::Pistol()
 	
 	SpawnWeapon("PistolSocket", 1);
 	
-	
-	this->CallFunctionByNameWithArguments(TEXT("ZoomCamera"), ar, NULL, true);
-	Zoom = true;
+	Zoom();
 	bPistolMode = true;
 	bUseControllerRotationYaw = true;
 }
@@ -278,12 +276,21 @@ void ACatsWarCharacter::SpawnWeapon(FString SocketName, int32 WeaponIndex)
 	PrintDebugMessage("SpawnWeapon");
 }
 
+void ACatsWarCharacter::Zoom()
+{
+	CameraBoom->SetRelativeLocation(FVector(0.f, 100.f, 60.f));
+	bZoom = true;
+	this->CallFunctionByNameWithArguments(TEXT("ZoomCamera"), ar, NULL, true);
+}
+
 void ACatsWarCharacter::Unzoom()
 {
-	if(Zoom)
+	if(bZoom)
 	{
+		CameraBoom->SetRelativeLocation(FVector(0.f, 0.f, 60.f));
+		bZoom = false;
 		this->CallFunctionByNameWithArguments(TEXT("UnzoomCamera"), ar, NULL, true);
-		Zoom = false;
+		
 	}
 	
 }

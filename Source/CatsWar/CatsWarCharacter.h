@@ -156,7 +156,8 @@ private:
 	void Bat();
 	void Pistol();
 	AActor* Weapon;
-	bool Zoom = false;
+	bool bZoom = false;
+	void Zoom();
 	void Unzoom();
 
 	void PistolAttack();

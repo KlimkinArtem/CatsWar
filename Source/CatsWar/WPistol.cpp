@@ -35,23 +35,16 @@ void AWPistol::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* 
 
 void AWPistol::Shoot()
 {
-	PrintDebugMessage("YA LOH BLYAT");
+	PrintDebugMessage("AWPistol::Shoot");
+	FVector SocketLocation = SkeletalMeshComponent->GetSocketLocation("FireSocket");
+	FRotator SocketRotation = SkeletalMeshComponent->GetSocketRotation("FireSocket");
+
+	
 }
 
 void AWPistol::PrintDebugMessage(FString Message, float TimeToDisplay, FColor Color)
 {
 	GEngine->AddOnScreenDebugMessage(-1, TimeToDisplay, Color, Message);
-}
-
-FVector AWPistol::GetSocketLocation()
-{
-	
-	return  SocketLocation;
-}
-
-FRotator AWPistol::GetSocketRotation()
-{
-	return  SocketRotation;
 }
 
 void AWPistol::SetSocketTransform()

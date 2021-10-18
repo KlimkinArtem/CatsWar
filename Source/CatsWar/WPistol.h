@@ -23,11 +23,6 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(BlueprintReadWrite)
-	FVector SocketLocation;
-
-	UPROPERTY(BlueprintReadWrite)
-	FRotator SocketRotation;
 
 public:	
 	// Called every frame

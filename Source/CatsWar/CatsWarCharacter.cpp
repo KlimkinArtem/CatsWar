@@ -1,6 +1,8 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "CatsWarCharacter.h"
+
+#include "DrawDebugHelpers.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -264,18 +266,25 @@ void ACatsWarCharacter::SpawnWeapon(FString SocketName, int32 WeaponIndex)
 
 void ACatsWarCharacter::PistolAttack()
 {
-	//SomeClass* MyObject = NewObject<SomeClass>(ObjectClass);
-
-	//AWPistol* Pistol = NewObject<AWPistol>(Weapon);
-
-	//AWPistol* Pistol = NewObject<AWPistol>(Weapon);
-	//FVector vector = Pistol->GetSocketLocation();
-	
-	//UE_LOG(LogTemp, Warning, TEXT("Current: %s"), *vector.ToString());
-
 	Shoot.Broadcast();
 
+	FVector Start = FollowCamera->GetComponentLocation();
+	FVector FollowCameraForwardVector = FollowCamera->GetForwardVector();
+
+	FHitResult OutHit;
+
+	FVector End = ((FollowCameraForwardVector * 3000.f) + Start);
+	FCollisionQueryParams CollisionParams;
+	CollisionParams.AddIgnoredActor(this);
 	
+	DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 3, 0, 2);
+
+	bool bIsHit = GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECC_Visibility, CollisionParams);
+	if(bIsHit)
+	{
+		
+		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Green, FString::Printf(TEXT("The Component Being Hit is: %s"), *OutHit.GetActor()->GetName()));
+	}
 }
 
 void ACatsWarCharacter::Attack()

@@ -12,6 +12,7 @@ DECLARE_DELEGATE_OneParam(FShakeDelegate, float)
 DECLARE_DELEGATE_OneParam(FMaxSpeedDelegate, float)
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FShootDelegate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FHealthDelegate);
 
 enum EBoost
 {
@@ -59,6 +60,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FShootDelegate Shoot;
+	
+	UPROPERTY(BlueprintAssignable)
+	FHealthDelegate HealthDelegate;
 	
 protected:
 	

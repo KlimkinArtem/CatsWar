@@ -322,13 +322,13 @@ void ACatsWarCharacter::PistolAttack()
 		{
 			if(OutHit.BoneName == "Head")
 			{
-				ApplyDamage(10.f);
+				HealthDelegate.Broadcast();
 				
 			}else
 			{
-				ApplyDamage(5.f);
+				HealthDelegate.Broadcast();
 			}
-
+			
 			
 		}
 

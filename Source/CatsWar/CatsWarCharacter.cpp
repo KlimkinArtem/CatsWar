@@ -297,6 +297,8 @@ void ACatsWarCharacter::Unzoom()
 	
 }
 
+
+
 void ACatsWarCharacter::PistolAttack()
 {
 	Shoot.Broadcast();
@@ -305,7 +307,7 @@ void ACatsWarCharacter::PistolAttack()
 	FVector FollowCameraForwardVector = FollowCamera->GetForwardVector();
 
 	FHitResult OutHit;
-
+	
 	FVector End = ((FollowCameraForwardVector * 3000.f) + Start);
 	FCollisionQueryParams CollisionParams;
 	CollisionParams.AddIgnoredActor(this);
@@ -316,12 +318,34 @@ void ACatsWarCharacter::PistolAttack()
 	
 	if(bIsHit)
 	{
-		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Bone is: %s"), *OutHit.BoneName.ToString()));
+		if(OutHit.GetActor()->GetClass()->IsChildOf(ACatsWarCharacter::StaticClass()))
+		{
+			if(OutHit.BoneName == "Head")
+			{
+				ApplyDamage(10.f);
+				
+			}else
+			{
+				ApplyDamage(5.f);
+			}
 
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Bone is: %s"), *OutHit.GetActor()->GetName()));
+			
+		}
+
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Bone is: %s"), *OutHit.GetActor()->GetName()));
 
 		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("The Component Being Hit is: %s"), *OutHit.GetActor()->GetName()));
 	}
+}
+
+void ACatsWarCharacter::ApplyDamage(float Damage)
+{
+
+	//Попробовать сделать отдельным компанентом
+	static float Health = 100.f;
+
+	Health -= 10.f;
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("The Component Being Hit is: %f"), Health));
 }
 
 void ACatsWarCharacter::Attack()

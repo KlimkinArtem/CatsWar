@@ -160,6 +160,8 @@ private:
 	void Zoom();
 	void Unzoom();
 
+	void ApplyDamage(float Damage);
+	
 	void PistolAttack();
 	
 	

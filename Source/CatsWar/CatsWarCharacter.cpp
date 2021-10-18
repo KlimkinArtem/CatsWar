@@ -40,12 +40,12 @@ ACatsWarCharacter::ACatsWarCharacter()
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
 	CameraBoom->TargetArmLength = 450.0f; // The camera follows at this distance behind the character	
-	CameraBoom->bUsePawnControlRotation = true; // Rotate the arm based on the controller
+	CameraBoom->bUsePawnControlRotation = false; // Rotate the arm based on the controller
 
 	// Create a follow camera
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
-	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
+	FollowCamera->bUsePawnControlRotation = true; // Camera does not rotate relative to arm
 
 	//USkeletalMeshComponent* Mesh = GetMesh();
 }
@@ -211,6 +211,12 @@ void ACatsWarCharacter::Hand()
 	
 	bPistolMode = false;
 	PrintDebugMessage("Hand");
+	
+	
+	bUseControllerRotationYaw = false;
+	Unzoom();
+
+
 }
 
 void ACatsWarCharacter::Bat()
@@ -224,7 +230,10 @@ void ACatsWarCharacter::Bat()
 	}
 	
 	SpawnWeapon("BatSocket", 0);
+
 	
+	bUseControllerRotationYaw = false;
+	Unzoom();
 }
 
 void ACatsWarCharacter::Pistol()
@@ -239,7 +248,12 @@ void ACatsWarCharacter::Pistol()
 	
 	
 	SpawnWeapon("PistolSocket", 1);
+	
+	
+	this->CallFunctionByNameWithArguments(TEXT("ZoomCamera"), ar, NULL, true);
+	Zoom = true;
 	bPistolMode = true;
+	bUseControllerRotationYaw = true;
 }
 
 void ACatsWarCharacter::SpawnWeapon(FString SocketName, int32 WeaponIndex)
@@ -262,6 +276,16 @@ void ACatsWarCharacter::SpawnWeapon(FString SocketName, int32 WeaponIndex)
 	Weapon->AttachToComponent(GetMesh(), AttachRules, *SocketName);
 
 	PrintDebugMessage("SpawnWeapon");
+}
+
+void ACatsWarCharacter::Unzoom()
+{
+	if(Zoom)
+	{
+		this->CallFunctionByNameWithArguments(TEXT("UnzoomCamera"), ar, NULL, true);
+		Zoom = false;
+	}
+	
 }
 
 void ACatsWarCharacter::PistolAttack()

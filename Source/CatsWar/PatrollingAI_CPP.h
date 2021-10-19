@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "PatrollingAI_CPP.generated.h"
 
+
 UCLASS()
 class CATSWAR_API APatrollingAI_CPP : public ACharacter
 {
@@ -24,6 +25,10 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+
+	UPROPERTY(EditAnywhere)
+	float DuckDamage = 10;
+	
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
@@ -45,4 +50,5 @@ private:
 	
 	FOutputDeviceNull ar;
 	ACatsWarCharacter* Cat_Char;
+	
 };

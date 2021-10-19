@@ -304,11 +304,11 @@ void ACatsWarCharacter::PistolAttack()
 		{
 			if(OutHit.BoneName == "Head")
 			{
-				HealthDelegate.Broadcast();
+				//HealthDelegate.Broadcast();
 				
 			}else
 			{
-				HealthDelegate.Broadcast();
+				//HealthDelegate.Broadcast();
 			}
 			
 			
@@ -346,7 +346,7 @@ void ACatsWarCharacter::MeleAttack(float Radius, int32 Segments)
 				if(Hit.Actor->ActorHasTag("Enemy"))
 				{
 					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Hit Result: %s"), *Hit.Actor->GetName()));
-					EnemyAttackDelegate.Broadcast(10.f);
+					EnemyAttackDelegate.Broadcast(BatDamage);
 				}
 			}						
 		}
@@ -355,14 +355,25 @@ void ACatsWarCharacter::MeleAttack(float Radius, int32 Segments)
 	//GetWorld()->SweepSingleByChannel();
 }
 
-void ACatsWarCharacter::ApplyDamage(float Damage)
+void ACatsWarCharacter::GetDamage(float Damage)
 {
+	Health -= Damage;
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Health: %f"), Health));
+	CameraSake(1);
+	if(Health <= 0.f)
+	{
+		Death();
+	}
+}
 
-	//Попробовать сделать отдельным компанентом
-	static float Health = 100.f;
 
-	Health -= 10.f;
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("The Component Being Hit is: %f"), Health));
+void ACatsWarCharacter::Death()
+{
+	GetCharacterMovement()->DisableMovement();
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetMesh()->SetAllBodiesSimulatePhysics(true);
+	GetMesh()->SetAllBodiesPhysicsBlendWeight(1.f, false);
 }
 
 void ACatsWarCharacter::Attack()

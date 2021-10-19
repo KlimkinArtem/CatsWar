@@ -12,7 +12,7 @@ DECLARE_DELEGATE_OneParam(FShakeDelegate, float)
 DECLARE_DELEGATE_OneParam(FMaxSpeedDelegate, float)
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FShootDelegate);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FHealthDelegate);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FEnemyAttackDelegate, float, Damage);
 
 enum EBoost
@@ -62,8 +62,7 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FShootDelegate Shoot;
 	
-	UPROPERTY(BlueprintAssignable)
-	FHealthDelegate HealthDelegate;
+
 
 	UPROPERTY(BlueprintAssignable)
 	FEnemyAttackDelegate EnemyAttackDelegate;
@@ -114,6 +113,9 @@ public:
 	UPROPERTY(EditAnywhere)
 	float TimerEndTime = 15;
 
+	UPROPERTY(EditAnywhere)
+	float BatDamage = 10;
+	
 	UPROPERTY(BlueprintReadOnly, Category="Animation mode")
 	bool bPistolMode = false;
 
@@ -138,9 +140,11 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void MeleAttack(float Radius, int32 Segments);
 
+	UFUNCTION()
+	void GetDamage(float Damage);
+	
 	UPROPERTY(EditDefaultsOnly, Category= "Weapons")
 	TArray<TSubclassOf<AActor>> Weapons;
-
 
 
 private:
@@ -176,7 +180,8 @@ private:
 	
 	void PistolAttack();
 	
-	
+	float Health = 100.f;
+	void Death();
 	
 	void Attack();
 	EAttackType AttackType = EAttackType::HAND;

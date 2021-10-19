@@ -24,12 +24,15 @@ void APatrollingAI_CPP::BeginPlay()
 
 	Cat_Char = Cast<ACatsWarCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 	Cat_Char->EnemyAttackDelegate.AddDynamic(this, &APatrollingAI_CPP::GetDamage);
+	
 }
 
 void APatrollingAI_CPP::GetDamage(float Damage)
 {
 	Health -= Damage;
-	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Purple, FString::Printf(TEXT("Actor is death: %s"), *GetName()));
+	
+	this->CallFunctionByNameWithArguments(TEXT("DamageAnim"), ar, NULL, true);
+	
 	if(Health <= 0)
 	{
 		Death();
@@ -97,8 +100,7 @@ void APatrollingAI_CPP::MeleAttack(float Radius, int32 Segments, bool DrawDebug)
 				
 				if(Hit.Actor->ActorHasTag("Player"))
 				{
-					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Hit Result: %s"), *Hit.Actor->GetName()));
-					//EnemyAttackDelegate.Broadcast(10.f);
+					Cat_Char->GetDamage(DuckDamage);
 				}
 			}						
 		}

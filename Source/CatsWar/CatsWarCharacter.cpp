@@ -342,6 +342,9 @@ void ACatsWarCharacter::MeleAttack(float Radius, int32 Segments)
 
 					Hit.GetActor()->TakeDamage(HandsAndBatDamage, FDamageEvent(), GetController(), this);
 					
+				}else if(Hit.Actor->ActorHasTag("NPC"))
+				{
+					Hit.GetActor()->TakeDamage(HandsAndBatDamage, FDamageEvent(), GetController(), this);
 				}
 			}						
 		}

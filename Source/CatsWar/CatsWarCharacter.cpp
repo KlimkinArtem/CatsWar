@@ -297,6 +297,8 @@ void ACatsWarCharacter::PistolAttack()
 	//DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 3, 0, 2);
 
 	bool bIsHit = GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECC_Pawn, CollisionParams);
+
+	
 	
 	if(bIsHit)
 	{
@@ -305,6 +307,7 @@ void ACatsWarCharacter::PistolAttack()
 			if(OutHit.Actor->ActorHasTag("Enemy"))
 			{
 				OutHit.GetActor()->TakeDamage(PistolDamage, FDamageEvent(), GetController(), this);
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Health: %s"), *OutHit.BoneName.ToString()));
 			}else if(OutHit.Actor->ActorHasTag("NPC"))
 			{
 				OutHit.GetActor()->TakeDamage(4.f, FDamageEvent(), GetController(), this);

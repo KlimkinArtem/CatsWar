@@ -33,6 +33,7 @@ void APatrollingAI_CPP::BeginPlay()
 	Cat_Char->EnemyAttackDelegate.AddDynamic(this, &APatrollingAI_CPP::GetDamage);
 
 	Controller = Cast<AAIPatrollingController>(GetController());
+	
 }
 
 void APatrollingAI_CPP::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
@@ -68,7 +69,15 @@ float APatrollingAI_CPP::TakeDamage(float Damage, FDamageEvent const& DamageEven
 	Health -= Damage;
 	
 	this->CallFunctionByNameWithArguments(TEXT("DamageAnim"), ar, NULL, true);
-	Controller->CallFunctionByNameWithArguments(TEXT("FindPlayer"), ar, NULL, true);
+	//this->CallFunctionByNameWithArguments(TEXT("AiMove"), ar, NULL, true);
+
+	FAIMoveRequest MoveReq;
+	//MoveReq.SetUsePathfinding(true);
+	MoveReq.SetAcceptanceRadius(5.f);
+	//MoveReq.SetStopOnOverlap(false);
+	MoveReq.SetGoalActor(Cat_Char);
+	Controller->MoveTo(MoveReq);
+	
 	
 	if(Health <= 0)
 	{

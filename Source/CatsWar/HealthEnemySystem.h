@@ -31,7 +31,7 @@ public:
 private:
 
 	float Health = 30;
-	
+	FOutputDeviceNull ar;
 
 	ACatsWarCharacter* Cat_Char;
 };

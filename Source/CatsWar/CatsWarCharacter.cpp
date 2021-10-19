@@ -338,9 +338,9 @@ void ACatsWarCharacter::MeleAttack(float Radius, int32 Segments)
 				if(Hit.Actor->ActorHasTag("Enemy"))
 				{
 					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Hit Result: %s"), *Hit.Actor->GetName()));
-					EnemyAttackDelegate.Broadcast(BatDamage);
-					
-					Hit.GetActor()->TakeDamage(BatDamage, FDamageEvent(), GetController(), this);
+
+
+					Hit.GetActor()->TakeDamage(HandsAndBatDamage, FDamageEvent(), GetController(), this);
 					
 				}
 			}						
@@ -377,9 +377,11 @@ void ACatsWarCharacter::Attack()
 	switch (AttackType)
 	{
 	case HAND:
+		HandsAndBatDamage = 5;
 		CallFunctionByNameWithArguments(TEXT("HandAttackAnim"), ar, NULL, true);
 		break;
 	case BAT:
+		HandsAndBatDamage = 10;
 		CallFunctionByNameWithArguments(TEXT("BatAttackAnim"), ar, NULL, true);
 		break;
 	case PISTOL:

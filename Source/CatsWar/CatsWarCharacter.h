@@ -113,8 +113,7 @@ public:
 	UPROPERTY(EditAnywhere)
 	float TimerEndTime = 15;
 
-	UPROPERTY(EditAnywhere, Category = "Health and damage")
-	float BatDamage = 10;
+
 
 	UPROPERTY(EditAnywhere, Category = "Health and damage")
 	float PistolDamage = 20;
@@ -125,6 +124,7 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category="Animation mode")
 	bool bPistolMode = false;
 
+	
  
 	
 public:
@@ -187,11 +187,13 @@ private:
 	void PistolAttack();
 	
 	
+	
 	void Death();
 	
 	void Attack();
 	EAttackType AttackType = EAttackType::HAND;
 
+	float HandsAndBatDamage = 5;
 	/*void SpawnWeapon(FVector Location, FRotator Rotation, FName SocketName);
 	
 	AActor* Weapon;*/

@@ -13,6 +13,7 @@ DECLARE_DELEGATE_OneParam(FMaxSpeedDelegate, float)
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FShootDelegate);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FHealthDelegate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FEnemyAttackDelegate, float, Damage);
 
 enum EBoost
 {
@@ -63,6 +64,9 @@ public:
 	
 	UPROPERTY(BlueprintAssignable)
 	FHealthDelegate HealthDelegate;
+
+	UPROPERTY(BlueprintAssignable)
+	FEnemyAttackDelegate EnemyAttackDelegate;
 	
 protected:
 	
@@ -131,6 +135,9 @@ public:
 	UFUNCTION()
 	void SpeedBoost();
 
+	UFUNCTION(BlueprintCallable)
+	void MeleAttack(float Radius, int32 Segments);
+
 	UPROPERTY(EditDefaultsOnly, Category= "Weapons")
 	TArray<TSubclassOf<AActor>> Weapons;
 
@@ -161,12 +168,14 @@ private:
 	void Pistol();
 	AActor* Weapon;
 	bool bZoom = false;
+	
 	void Zoom();
 	void Unzoom();
 
 	void ApplyDamage(float Damage);
 	
 	void PistolAttack();
+	
 	
 	
 	void Attack();

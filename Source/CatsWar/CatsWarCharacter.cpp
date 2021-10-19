@@ -278,24 +278,6 @@ void ACatsWarCharacter::SpawnWeapon(FString SocketName, int32 WeaponIndex)
 	PrintDebugMessage("SpawnWeapon");
 }
 
-void ACatsWarCharacter::Zoom()
-{
-	CameraBoom->SetRelativeLocation(FVector(0.f, 100.f, 60.f));
-	bZoom = true;
-	this->CallFunctionByNameWithArguments(TEXT("ZoomCamera"), ar, NULL, true);
-}
-
-void ACatsWarCharacter::Unzoom()
-{
-	if(bZoom)
-	{
-		CameraBoom->SetRelativeLocation(FVector(0.f, 0.f, 60.f));
-		bZoom = false;
-		this->CallFunctionByNameWithArguments(TEXT("UnzoomCamera"), ar, NULL, true);
-		
-	}
-	
-}
 
 
 
@@ -338,6 +320,41 @@ void ACatsWarCharacter::PistolAttack()
 	}
 }
 
+void ACatsWarCharacter::MeleAttack(float Radius, int32 Segments)
+{
+	FVector Start = GetMesh()->GetSocketLocation(TEXT("BatAttack"));
+	
+	
+	//DrawDebugSphere(GetWorld(), Start, Radius, Segments, FColor(181,0,0), true, 2, 0, 2);
+	TArray<FHitResult> OutHits;
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(this);
+	
+	FCollisionShape Sphere = FCollisionShape::MakeSphere(Radius);
+	
+	bool bIsHit = GetWorld()->SweepMultiByChannel(OutHits, Start, Start, FQuat::Identity, ECC_Pawn, Sphere, Params);
+	
+	if (bIsHit)
+	{
+		// loop through TArray
+		for (auto& Hit : OutHits)
+		{
+			if (GEngine) 
+			{
+				// screen log information on what was hit
+				
+				if(Hit.Actor->ActorHasTag("Enemy"))
+				{
+					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Hit Result: %s"), *Hit.Actor->GetName()));
+					EnemyAttackDelegate.Broadcast(10.f);
+				}
+			}						
+		}
+	}
+
+	//GetWorld()->SweepSingleByChannel();
+}
+
 void ACatsWarCharacter::ApplyDamage(float Damage)
 {
 
@@ -367,6 +384,25 @@ void ACatsWarCharacter::Attack()
 	
 }
 
+
+void ACatsWarCharacter::Zoom()
+{
+	CameraBoom->SetRelativeLocation(FVector(0.f, 100.f, 60.f));
+	bZoom = true;
+	this->CallFunctionByNameWithArguments(TEXT("ZoomCamera"), ar, NULL, true);
+}
+
+void ACatsWarCharacter::Unzoom()
+{
+	if(bZoom)
+	{
+		CameraBoom->SetRelativeLocation(FVector(0.f, 0.f, 60.f));
+		bZoom = false;
+		this->CallFunctionByNameWithArguments(TEXT("UnzoomCamera"), ar, NULL, true);
+		
+	}
+	
+}
 
 
 

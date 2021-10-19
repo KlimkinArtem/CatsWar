@@ -53,5 +53,7 @@ private:
 	
 	FOutputDeviceNull ar;
 	ACatsWarCharacter* Cat_Char;
-	
+
+
+	virtual float TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 };

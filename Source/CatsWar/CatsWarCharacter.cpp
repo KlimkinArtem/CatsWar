@@ -347,6 +347,9 @@ void ACatsWarCharacter::MeleAttack(float Radius, int32 Segments)
 				{
 					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Hit Result: %s"), *Hit.Actor->GetName()));
 					EnemyAttackDelegate.Broadcast(BatDamage);
+					
+					Hit.GetActor()->TakeDamage(BatDamage, FDamageEvent(), GetController(), this);
+					
 				}
 			}						
 		}

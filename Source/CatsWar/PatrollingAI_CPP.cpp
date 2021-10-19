@@ -29,14 +29,7 @@ void APatrollingAI_CPP::BeginPlay()
 
 void APatrollingAI_CPP::GetDamage(float Damage)
 {
-	Health -= Damage;
-	
-	this->CallFunctionByNameWithArguments(TEXT("DamageAnim"), ar, NULL, true);
-	
-	if(Health <= 0)
-	{
-		Death();
-	}
+
 }
 
 void APatrollingAI_CPP::Death()
@@ -47,6 +40,20 @@ void APatrollingAI_CPP::Death()
 	GetMesh()->SetAllBodiesSimulatePhysics(true);
 	GetMesh()->SetAllBodiesPhysicsBlendWeight(1.f, false);
 	bDeath = true;
+}
+
+float APatrollingAI_CPP::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator,
+	AActor* DamageCauser)
+{
+	Health -= Damage;
+	
+	this->CallFunctionByNameWithArguments(TEXT("DamageAnim"), ar, NULL, true);
+	
+	if(Health <= 0)
+	{
+		Death();
+	}
+	return Damage;
 }
 
 

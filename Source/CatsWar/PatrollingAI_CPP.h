@@ -26,8 +26,11 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Health and damage")
 	float DuckDamage = 10;
+	
+	UPROPERTY(EditAnywhere, Category = "Health and damage")
+	float Health = 100;
 	
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -43,7 +46,7 @@ public:
 
 private:
 
-	float Health = 30;
+	
 	//FOutputDeviceNull ar;
 
 	void Death();

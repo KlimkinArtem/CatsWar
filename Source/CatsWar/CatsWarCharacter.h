@@ -113,13 +113,16 @@ public:
 	UPROPERTY(EditAnywhere)
 	float TimerEndTime = 15;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Health and damage")
 	float BatDamage = 10;
+	
+	UPROPERTY(EditAnywhere, Category = "Health and damage")
+	float Health = 100.f;
 	
 	UPROPERTY(BlueprintReadOnly, Category="Animation mode")
 	bool bPistolMode = false;
 
-
+ 
 	
 public:
 	UFUNCTION()
@@ -180,7 +183,7 @@ private:
 	
 	void PistolAttack();
 	
-	float Health = 100.f;
+	
 	void Death();
 	
 	void Attack();

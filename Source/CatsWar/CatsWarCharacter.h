@@ -115,6 +115,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Health and damage")
 	float BatDamage = 10;
+
+	UPROPERTY(EditAnywhere, Category = "Health and damage")
+	float PistolDamage = 20;
 	
 	UPROPERTY(EditAnywhere, Category = "Health and damage")
 	float Health = 100.f;

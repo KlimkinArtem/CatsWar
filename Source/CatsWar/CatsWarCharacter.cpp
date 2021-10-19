@@ -296,27 +296,19 @@ void ACatsWarCharacter::PistolAttack()
 	
 	//DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 3, 0, 2);
 
-	bool bIsHit = GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECC_PhysicsBody, CollisionParams);
+	bool bIsHit = GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECC_Pawn, CollisionParams);
 	
 	if(bIsHit)
 	{
-		if(OutHit.GetActor()->GetClass()->IsChildOf(ACatsWarCharacter::StaticClass()))
+		if(GEngine)
 		{
-			if(OutHit.BoneName == "Head")
+			if(OutHit.Actor->ActorHasTag("Enemy"))
 			{
-				//HealthDelegate.Broadcast();
-				
-			}else
-			{
-				//HealthDelegate.Broadcast();
+				OutHit.GetActor()->TakeDamage(PistolDamage, FDamageEvent(), GetController(), this);
 			}
-			
-			
 		}
 
-		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Bone is: %s"), *OutHit.GetActor()->GetName()));
-
-		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("The Component Being Hit is: %s"), *OutHit.GetActor()->GetName()));
+		
 	}
 }
 

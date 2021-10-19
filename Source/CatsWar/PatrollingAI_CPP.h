@@ -27,9 +27,14 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UFUNCTION(BlueprintCallable)
+	void MeleAttack(float Radius, int32 Segments,bool DrawDebug = false);
+
+	UPROPERTY(BlueprintReadOnly)
+	bool bDeath = false;
 
 	UFUNCTION()
-void GetDamage(float Damage);
+	void GetDamage(float Damage);
 
 private:
 

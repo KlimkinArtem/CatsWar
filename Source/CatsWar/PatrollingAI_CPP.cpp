@@ -3,6 +3,7 @@
 
 #include "PatrollingAI_CPP.h"
 
+#include "DrawDebugHelpers.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -31,9 +32,6 @@ void APatrollingAI_CPP::GetDamage(float Damage)
 	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Purple, FString::Printf(TEXT("Actor is death: %s"), *GetName()));
 	if(Health <= 0)
 	{
-		//GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Purple, FString::Printf(TEXT("Actor is death: %s"), *GetName()));
-		//GetOwner()->CallFunctionByNameWithArguments(TEXT("Physics"), ar, NULL, true);
-		//GetOwner()->Destroy();
 		Death();
 	}
 }
@@ -45,6 +43,7 @@ void APatrollingAI_CPP::Death()
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetMesh()->SetAllBodiesSimulatePhysics(true);
 	GetMesh()->SetAllBodiesPhysicsBlendWeight(1.f, false);
+	bDeath = true;
 }
 
 
@@ -55,11 +54,14 @@ void APatrollingAI_CPP::Tick(float DeltaTime)
 
 	float Distance = GetDistanceTo(Cat_Char);
 
-
-	if(Distance <= 160.f)
+	if(!bDeath)
 	{
-		this->CallFunctionByNameWithArguments(TEXT("Attack"), ar, NULL, true);
+		if(Distance <= 160.f)
+		{
+			this->CallFunctionByNameWithArguments(TEXT("Attack"), ar, NULL, true);
+		}
 	}
+
 
 }
 
@@ -70,3 +72,42 @@ void APatrollingAI_CPP::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 }
 
+void APatrollingAI_CPP::MeleAttack(float Radius, int32 Segments, bool DrawDebug)
+{
+	FVector Start = GetMesh()->GetSocketLocation(TEXT("AttackSocket"));
+	
+	
+	
+	TArray<FHitResult> OutHits;
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(this);
+	
+	FCollisionShape Sphere = FCollisionShape::MakeSphere(Radius);
+	
+	bool bIsHit = GetWorld()->SweepMultiByChannel(OutHits, Start, Start, FQuat::Identity, ECC_Pawn, Sphere, Params);
+	
+	if (bIsHit)
+	{
+		// loop through TArray
+		for (auto& Hit : OutHits)
+		{
+			if (GEngine) 
+			{
+				// screen log information on what was hit
+				
+				if(Hit.Actor->ActorHasTag("Player"))
+				{
+					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Hit Result: %s"), *Hit.Actor->GetName()));
+					//EnemyAttackDelegate.Broadcast(10.f);
+				}
+			}						
+		}
+	}
+
+	if(DrawDebug)
+	{
+		DrawDebugSphere(GetWorld(), Start, Radius, Segments, FColor(181,0,0), true, 2, 0, 2);
+	}
+
+	//GetWorld()->SweepSingleByChannel();
+}

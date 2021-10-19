@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CatsWarCharacter.h"
 #include "GameFramework/Character.h"
 #include "PatrollingAI_CPP.generated.h"
 
@@ -26,4 +27,17 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+
+	UFUNCTION()
+void GetDamage(float Damage);
+
+private:
+
+	float Health = 30;
+	//FOutputDeviceNull ar;
+
+	void Death();
+	
+	FOutputDeviceNull ar;
+	ACatsWarCharacter* Cat_Char;
 };

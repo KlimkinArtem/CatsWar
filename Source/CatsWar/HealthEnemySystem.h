@@ -33,6 +33,8 @@ private:
 	float Health = 30;
 	FOutputDeviceNull ar;
 
+	void Death();
+
 	ACatsWarCharacter* Cat_Char;
 };
 

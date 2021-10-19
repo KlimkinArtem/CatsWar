@@ -3,6 +3,10 @@
 
 #include "PatrollingAI_CPP.h"
 
+#include "Components/CapsuleComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
+
 // Sets default values
 APatrollingAI_CPP::APatrollingAI_CPP()
 {
@@ -15,13 +19,47 @@ APatrollingAI_CPP::APatrollingAI_CPP()
 void APatrollingAI_CPP::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+
+	Cat_Char = Cast<ACatsWarCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	Cat_Char->EnemyAttackDelegate.AddDynamic(this, &APatrollingAI_CPP::GetDamage);
 }
+
+void APatrollingAI_CPP::GetDamage(float Damage)
+{
+	Health -= Damage;
+	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Purple, FString::Printf(TEXT("Actor is death: %s"), *GetName()));
+	if(Health <= 0)
+	{
+		//GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Purple, FString::Printf(TEXT("Actor is death: %s"), *GetName()));
+		//GetOwner()->CallFunctionByNameWithArguments(TEXT("Physics"), ar, NULL, true);
+		//GetOwner()->Destroy();
+		Death();
+	}
+}
+
+void APatrollingAI_CPP::Death()
+{
+	GetCharacterMovement()->DisableMovement();
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetMesh()->SetAllBodiesSimulatePhysics(true);
+	GetMesh()->SetAllBodiesPhysicsBlendWeight(1.f, false);
+}
+
 
 // Called every frame
 void APatrollingAI_CPP::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	float Distance = GetDistanceTo(Cat_Char);
+
+
+	if(Distance <= 160.f)
+	{
+		this->CallFunctionByNameWithArguments(TEXT("Attack"), ar, NULL, true);
+	}
 
 }
 

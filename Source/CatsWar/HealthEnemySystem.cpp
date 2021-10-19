@@ -34,12 +34,18 @@ void UHealthEnemySystem::GetDamage(float Damage)
 	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Purple, FString::Printf(TEXT("Actor is death: %s"), *GetName()));
 	if(Health <= 0)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Purple, FString::Printf(TEXT("Actor is death: %s"), *GetName()));
-		GetOwner()->CallFunctionByNameWithArguments(TEXT("PrintSomething"), ar, NULL, true);
-		GetOwner()->Destroy();
+		//GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Purple, FString::Printf(TEXT("Actor is death: %s"), *GetName()));
+		//GetOwner()->CallFunctionByNameWithArguments(TEXT("Physics"), ar, NULL, true);
+		//GetOwner()->Destroy();
+		Death();
 	}
 }
 
+void UHealthEnemySystem::Death()
+{
+	//GetOwner()->GatherCurrentMovement();
+	
+}
 
 
 // Called every frame

@@ -4,6 +4,7 @@
 #include "PatrollingAI_CPP.h"
 
 #include "DrawDebugHelpers.h"
+#include "Components/BoxComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -14,6 +15,12 @@ APatrollingAI_CPP::APatrollingAI_CPP()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("CollisionBox"));
+	CollisionBox->SetBoxExtent(FVector(32.f, 32.f, 32.f));
+	CollisionBox->SetCollisionProfileName("Trigger");
+	CollisionBox->SetupAttachment(RootComponent);
+
+	CollisionBox->OnComponentBeginOverlap.AddDynamic(this, &APatrollingAI_CPP::OnOverlapBegin);
 }
 
 // Called when the game starts or when spawned
@@ -24,8 +31,19 @@ void APatrollingAI_CPP::BeginPlay()
 
 	Cat_Char = Cast<ACatsWarCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 	Cat_Char->EnemyAttackDelegate.AddDynamic(this, &APatrollingAI_CPP::GetDamage);
-	
+
+	Controller = Cast<AAIPatrollingController>(GetController());
 }
+
+void APatrollingAI_CPP::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if(OtherActor->ActorHasTag("Vehicle"))
+	{
+		Death();
+	}
+}
+
 
 void APatrollingAI_CPP::GetDamage(float Damage)
 {
@@ -40,6 +58,8 @@ void APatrollingAI_CPP::Death()
 	GetMesh()->SetAllBodiesSimulatePhysics(true);
 	GetMesh()->SetAllBodiesPhysicsBlendWeight(1.f, false);
 	bDeath = true;
+
+	GetWorldTimerManager().SetTimer(MemberTimerHandle, this, &APatrollingAI_CPP::DestroyActor, 1.0f, true, 0.f);
 }
 
 float APatrollingAI_CPP::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator,
@@ -48,6 +68,7 @@ float APatrollingAI_CPP::TakeDamage(float Damage, FDamageEvent const& DamageEven
 	Health -= Damage;
 	
 	this->CallFunctionByNameWithArguments(TEXT("DamageAnim"), ar, NULL, true);
+	Controller->CallFunctionByNameWithArguments(TEXT("FindPlayer"), ar, NULL, true);
 	
 	if(Health <= 0)
 	{
@@ -119,4 +140,18 @@ void APatrollingAI_CPP::MeleAttack(float Radius, int32 Segments, bool DrawDebug)
 	}
 
 	//GetWorld()->SweepSingleByChannel();
+}
+
+void APatrollingAI_CPP::DestroyActor()
+{
+	
+	if (CountTime == DestroyTime)
+	{
+		Destroy();
+		GetWorldTimerManager().ClearTimer(MemberTimerHandle);
+	}
+	CountTime++;
+	FString CountTimeString = FString::FromInt(CountTime);
+	
+	
 }

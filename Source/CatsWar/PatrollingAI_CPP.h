@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AIPatrollingController.h"
 #include "CatsWarCharacter.h"
 #include "GameFramework/Character.h"
 #include "PatrollingAI_CPP.generated.h"
@@ -44,6 +45,15 @@ public:
 	UFUNCTION()
 	void GetDamage(float Damage);
 
+	UPROPERTY(EditAnywhere)
+	float DestroyTime = 30.f;
+
+	UFUNCTION()
+	void OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UBoxComponent* CollisionBox;
+
 private:
 
 	
@@ -56,4 +66,12 @@ private:
 
 
 	virtual float TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+
+	void DestroyActor();
+	float CountTime = 0.f;
+
+	FTimerHandle MemberTimerHandle;
+
+	AAIPatrollingController* Controller;
 };
+

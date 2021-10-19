@@ -32,10 +32,21 @@ public:
 	UFUNCTION()
 	void OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
+	UPROPERTY(EditAnywhere)
+	float Health = 4.f;
 
+	UPROPERTY(EditAnywhere)
+	float DestroyTime = 30.f;
+	
 private:
 
 	virtual float TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 	void Death();
+
+	void DestroyActor();
+
+	float CountTime = 0;
+
+	FTimerHandle MemberTimerHandle;
 };

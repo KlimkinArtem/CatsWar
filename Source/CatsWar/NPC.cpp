@@ -56,7 +56,14 @@ void ANPC::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* Othe
 float ANPC::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator,
 	AActor* DamageCauser)
 {
-	Death();
+	Health -= Damage;
+	if(Health <= 0)
+	{
+		Death();
+	}
+
+	GetCharacterMovement()->MaxWalkSpeed = 800.f;
+	
 	return Damage;
 }
 
@@ -67,5 +74,21 @@ void ANPC::Death()
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetMesh()->SetAllBodiesSimulatePhysics(true);
 	GetMesh()->SetAllBodiesPhysicsBlendWeight(1.f, false);
+
+	GetWorldTimerManager().SetTimer(MemberTimerHandle, this, &ANPC::DestroyActor, 1.0f, true, 0.f);
+}
+
+void ANPC::DestroyActor()
+{
+	
+	if (CountTime == DestroyTime)
+	{
+		Destroy();
+		GetWorldTimerManager().ClearTimer(MemberTimerHandle);
+	}
+	CountTime++;
+	FString CountTimeString = FString::FromInt(CountTime);
+	
+	
 }
 

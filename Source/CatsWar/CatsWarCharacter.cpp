@@ -305,6 +305,9 @@ void ACatsWarCharacter::PistolAttack()
 			if(OutHit.Actor->ActorHasTag("Enemy"))
 			{
 				OutHit.GetActor()->TakeDamage(PistolDamage, FDamageEvent(), GetController(), this);
+			}else if(OutHit.Actor->ActorHasTag("NPC"))
+			{
+				OutHit.GetActor()->TakeDamage(4.f, FDamageEvent(), GetController(), this);
 			}
 		}
 
@@ -344,7 +347,7 @@ void ACatsWarCharacter::MeleAttack(float Radius, int32 Segments)
 					
 				}else if(Hit.Actor->ActorHasTag("NPC"))
 				{
-					Hit.GetActor()->TakeDamage(HandsAndBatDamage, FDamageEvent(), GetController(), this);
+					Hit.GetActor()->TakeDamage(1.f, FDamageEvent(), GetController(), this);
 				}
 			}						
 		}

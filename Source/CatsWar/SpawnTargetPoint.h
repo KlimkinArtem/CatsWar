@@ -33,8 +33,24 @@ public:
 	UPROPERTY(EditAnywhere, Category="Spawn")
 	TArray<TSubclassOf<AActor>> SpawnActors;
 
+	UPROPERTY(EditAnywhere, Category="Spawn parametrs")
+	float SpawnTime = 5;
+
+	UPROPERTY(EditAnywhere, Category="Spawn parametrs")
+	float Distance = 1000;
+
+
 private:
 	
 	ANPC* NPC;
 	ACatsWarCharacter* Cat_Char;
+	
+	void SpawnTimer();
+
+	float CountTime = 0;
+	
+
+	FTimerHandle MemberTimerHandle;
+
+	void Spawn();
 };

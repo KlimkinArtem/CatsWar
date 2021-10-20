@@ -35,25 +35,19 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UBoxComponent* CollisionBox;
 
-	UFUNCTION()
-	void OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<AActor> EmitterActor;
+
 	
 	UFUNCTION()
 	void Shoot();
 
-	void PrintDebugMessage(FString Message = "Hello", float TimeToDisplay = 1.f, FColor Color = FColor::Red);
 
-	FVector GetSocketLocation();
-	FRotator GetSocketRotation();
-	void SetSocketTransform();
-
-
-	void DelegateExample();
-
-	static void DoSomething();
 private:
 	FOutputDeviceNull ar;
 
+	
 
 	ACatsWarCharacter* Cat_Char;
 };

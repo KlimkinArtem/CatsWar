@@ -12,7 +12,6 @@ AWPistol::AWPistol()
 	RootComponent = SkeletalMeshComponent;
 
 
-	
 }
 
 // Called when the game starts or when spawned
@@ -25,58 +24,30 @@ void AWPistol::BeginPlay()
 
 }
 
-void AWPistol::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-	//Cat_Char = Cast<ACatsWarCharacter>(OtherActor);
-
-	//Cat_Char->Shoot.AddDynamic(this, &AWPistol::Shoot);
-}
-
-void AWPistol::Shoot()
-{
-	PrintDebugMessage("AWPistol::Shoot");
-	FVector SocketLocation = SkeletalMeshComponent->GetSocketLocation("FireSocket");
-	FRotator SocketRotation = SkeletalMeshComponent->GetSocketRotation("FireSocket");
-
-	
-}
-
-void AWPistol::PrintDebugMessage(FString Message, float TimeToDisplay, FColor Color)
-{
-	GEngine->AddOnScreenDebugMessage(-1, TimeToDisplay, Color, Message);
-}
-
-void AWPistol::SetSocketTransform()
-{
-
-	if(SkeletalMeshComponent->DoesSocketExist("FireSocket"))
-	{
-		PrintDebugMessage("YES");
-	}
-	else
-	{
-		PrintDebugMessage("No");
-	}
-	//CallFunctionByNameWithArguments(TEXT("SetSocketValue"), ar, NULL, true);
-	//PrintDebugMessage("SetSocketTransform finish");
-}
-
-void AWPistol::DelegateExample()
-{
-	PrintDebugMessage("RFEKDNMKMF");
-}
-
-void AWPistol::DoSomething()
-{
-	
-}
-
-
-// Called every frame
 void AWPistol::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
+
+
+void AWPistol::Shoot()
+{
+	
+	FVector SocketLocation = SkeletalMeshComponent->GetSocketLocation("FireSocket");
+	FRotator SocketRotation = SkeletalMeshComponent->GetSocketRotation("FireSocket");
+
+	//this->CallFunctionByNameWithArguments(TEXT("SpawnEmitter"), ar, NULL, true);
+	
+	//UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Fire, SocketLocation, SocketRotation, true);
+
+	FActorSpawnParameters SpawnInfo;
+	FAttachmentTransformRules AttachRules = FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true);
+	auto Emitter = GetWorld()->SpawnActor<AActor>(EmitterActor,SocketLocation, SocketRotation, SpawnInfo);
+	
+
+	Emitter->AttachToComponent(SkeletalMeshComponent, AttachRules, TEXT("FireSocket"));
+
+
+	
+}

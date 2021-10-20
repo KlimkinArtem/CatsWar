@@ -37,6 +37,11 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	float DestroyTime = 30.f;
+
+
+	UPROPERTY(EditAnywhere, Category="Spawn")
+	TArray<AActor*> SpawnTargets;
+	
 	
 private:
 
@@ -49,4 +54,6 @@ private:
 	float CountTime = 0;
 
 	FTimerHandle MemberTimerHandle;
+
+//	ASpawnTargetPoint* SpawnTargetPoint;
 };

@@ -386,11 +386,11 @@ void ACatsWarCharacter::Attack()
 	switch (AttackType)
 	{
 	case HAND:
-		HandsAndBatDamage = 5;
+		HandsAndBatDamage = 2.5f;
 		CallFunctionByNameWithArguments(TEXT("HandAttackAnim"), ar, NULL, true);
 		break;
 	case BAT:
-		HandsAndBatDamage = 10;
+		HandsAndBatDamage = 5;
 		CallFunctionByNameWithArguments(TEXT("BatAttackAnim"), ar, NULL, true);
 		break;
 	case PISTOL:

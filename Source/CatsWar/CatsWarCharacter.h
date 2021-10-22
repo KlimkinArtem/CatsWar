@@ -113,6 +113,8 @@ public:
 	UPROPERTY(EditAnywhere)
 	float TimerEndTime = 15;
 
+	UPROPERTY(EditAnywhere, Category= "Weapons")
+	float ReloadTime = 2.f;
 
 
 	UPROPERTY(EditAnywhere, Category = "Health and damage")
@@ -153,11 +155,12 @@ public:
 	TArray<TSubclassOf<AActor>> Weapons;
 
 
+
 private:
 
 	void RepeatingFunction();
 	FTimerHandle MemberTimerHandle;
-	INT32 CountTime = 0;
+	float CountTime = 0;
 	
 	void RestToDefaultParameters();
 
@@ -191,6 +194,16 @@ private:
 	void Death();
 	
 	void Attack();
+	bool Ammo();
+	void ReloadingPistol();
+	void ReloadingDelay();
+	float Bullets = 15.f;
+	float PistolClip = 5.f;
+	
+
+	FTimerHandle ReloadTimerHandle;
+	bool bReloading = true;	
+	
 	EAttackType AttackType = EAttackType::HAND;
 
 	float HandsAndBatDamage = 5;

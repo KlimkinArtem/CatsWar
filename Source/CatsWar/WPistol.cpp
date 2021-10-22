@@ -47,7 +47,4 @@ void AWPistol::Shoot()
 	
 
 	Emitter->AttachToComponent(SkeletalMeshComponent, AttachRules, TEXT("FireSocket"));
-
-
-	
 }

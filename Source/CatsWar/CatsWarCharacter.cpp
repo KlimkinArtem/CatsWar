@@ -284,6 +284,7 @@ void ACatsWarCharacter::SpawnWeapon(FString SocketName, int32 WeaponIndex)
 void ACatsWarCharacter::PistolAttack()
 {
 	Shoot.Broadcast();
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Bullet: %f"), Bullets));
 
 	FVector Start = FollowCamera->GetComponentLocation();
 	FVector FollowCameraForwardVector = FollowCamera->GetForwardVector();
@@ -307,7 +308,7 @@ void ACatsWarCharacter::PistolAttack()
 			if(OutHit.Actor->ActorHasTag("Enemy"))
 			{
 				OutHit.GetActor()->TakeDamage(PistolDamage, FDamageEvent(), GetController(), this);
-				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Health: %s"), *OutHit.BoneName.ToString()));
+				//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Health: %s"), *OutHit.BoneName.ToString()));
 			}else if(OutHit.Actor->ActorHasTag("NPC"))
 			{
 				OutHit.GetActor()->TakeDamage(4.f, FDamageEvent(), GetController(), this);
@@ -321,7 +322,7 @@ void ACatsWarCharacter::PistolAttack()
 void ACatsWarCharacter::MeleAttack(float Radius, int32 Segments)
 {
 	FVector Start = GetMesh()->GetSocketLocation(TEXT("BatAttack"));
-	
+
 	
 	//DrawDebugSphere(GetWorld(), Start, Radius, Segments, FColor(181,0,0), true, 2, 0, 2);
 	TArray<FHitResult> OutHits;
@@ -343,7 +344,7 @@ void ACatsWarCharacter::MeleAttack(float Radius, int32 Segments)
 				
 				if(Hit.Actor->ActorHasTag("Enemy"))
 				{
-					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Hit Result: %s"), *Hit.Actor->GetName()));
+					//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Hit Result: %s"), *Hit.Actor->GetName()));
 
 
 					Hit.GetActor()->TakeDamage(HandsAndBatDamage, FDamageEvent(), GetController(), this);
@@ -362,7 +363,7 @@ void ACatsWarCharacter::MeleAttack(float Radius, int32 Segments)
 void ACatsWarCharacter::GetDamage(float Damage)
 {
 	Health -= Damage;
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Health: %f"), Health));
+	
 	CameraSake(1);
 	if(Health <= 0.f)
 	{
@@ -395,10 +396,41 @@ void ACatsWarCharacter::Attack()
 		break;
 	case PISTOL:
 		CallFunctionByNameWithArguments(TEXT("PistolAttackAnim"), ar, NULL, true);
-		PistolAttack();
+		if(Ammo()) PistolAttack();
+		else
+		{
+			
+			ReloadingPistol();
+		}
 		break;
 	}
 	
+}
+
+bool ACatsWarCharacter::Ammo()
+{
+	Bullets--;
+	
+	return Bullets <= 0.f ? false : true;
+}
+
+void ACatsWarCharacter::ReloadingPistol()
+{
+	if(PistolClip <= 0) return;
+	
+	if(bReloading)
+	{
+		bReloading = false;
+		
+		CallFunctionByNameWithArguments(TEXT("PistolReloadAnim"), ar, NULL, true);
+		GetWorld()->GetTimerManager().SetTimer(ReloadTimerHandle, [&]()
+		{
+			bReloading = true;
+			PistolClip--;
+			Bullets = 15.f;
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("RELOAD WEPON after 3 seconds")));
+		}, ReloadTime, false);
+	}
 }
 
 
@@ -455,7 +487,9 @@ void ACatsWarCharacter::RestToDefaultParameters()
 
 void ACatsWarCharacter::Debug()
 {
-	bPistolMode ? PrintDebugMessage("true") : PrintDebugMessage("false");
+	PistolClip++;
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("PistolClip = %f"), PistolClip));
+	//bPistolMode ? PrintDebugMessage("true") : PrintDebugMessage("false");
 	
 	/*
 	if(IsValid(Weapon))

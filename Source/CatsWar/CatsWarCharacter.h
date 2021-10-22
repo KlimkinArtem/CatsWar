@@ -127,8 +127,6 @@ public:
 	bool bPistolMode = false;
 
 	
- 
-	
 public:
 	UFUNCTION()
 	void CameraSake(float Scale);

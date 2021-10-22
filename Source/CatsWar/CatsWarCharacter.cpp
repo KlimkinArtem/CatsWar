@@ -75,6 +75,7 @@ void ACatsWarCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerI
 	PlayerInputComponent->BindAction("Pistol", IE_Pressed, this, &ACatsWarCharacter::Pistol);
 	
 	PlayerInputComponent->BindAction("Attack", IE_Pressed, this, &ACatsWarCharacter::Attack);
+	PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &ACatsWarCharacter::ReloadingPistol);
 
 	PlayerInputComponent->BindAction<FMaxSpeedDelegate>("MaxSpeed", IE_Pressed, this, &ACatsWarCharacter::SetMaxWalkSpeed, 600.f);
 	PlayerInputComponent->BindAction<FMaxSpeedDelegate>("MaxSpeed", IE_Released, this, &ACatsWarCharacter::SetMaxWalkSpeed, 150.f);
@@ -222,7 +223,7 @@ void ACatsWarCharacter::Hand()
 void ACatsWarCharacter::Bat()
 {
 	AttackType = BAT;
-	
+
 	if(IsValid(Weapon) && Weapon->ActorHasTag(TEXT("BAT")))
 	{
 		PrintDebugMessage("Bat no spawn");
@@ -239,7 +240,7 @@ void ACatsWarCharacter::Bat()
 void ACatsWarCharacter::Pistol()
 {
 	AttackType = PISTOL;
-	
+
 	if(IsValid(Weapon) && Weapon->ActorHasTag(TEXT("PISTOL")))
 	{
 		PrintDebugMessage("Pistol no spawn");
@@ -286,6 +287,8 @@ void ACatsWarCharacter::PistolAttack()
 	Shoot.Broadcast();
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Bullet: %f"), Bullets));
 
+	MakeNoise(1, this, GetActorLocation(), 0, TEXT("Shoot"));
+	
 	FVector Start = FollowCamera->GetComponentLocation();
 	FVector FollowCameraForwardVector = FollowCamera->GetForwardVector();
 
@@ -396,12 +399,9 @@ void ACatsWarCharacter::Attack()
 		break;
 	case PISTOL:
 		CallFunctionByNameWithArguments(TEXT("PistolAttackAnim"), ar, NULL, true);
-		if(Ammo()) PistolAttack();
-		else
-		{
-			
-			ReloadingPistol();
-		}
+		if(Ammo() && bReloading) PistolAttack();
+		else ReloadingPistol();
+		
 		break;
 	}
 	

@@ -32,6 +32,7 @@ enum EAttackType
 	PISTOL,
 };
 
+
 UCLASS(config=Game)
 class ACatsWarCharacter : public ACharacter
 {

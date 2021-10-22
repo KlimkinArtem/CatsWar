@@ -289,7 +289,7 @@ void ACatsWarCharacter::PistolAttack()
 	Shoot.Broadcast();
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Bullet: %f"), Bullets));
 
-	UAudioComponent* AudioComponent = UGameplayStatics::SpawnSound2D(this, SoundCue[0], 1);
+	UAudioComponent* AudioComponent = UGameplayStatics::SpawnSound2D(this, ShootCue[0], 1);
 	
 	MakeNoise(1, this, GetActorLocation(), 0, TEXT("Shoot"));
 	
@@ -420,12 +420,16 @@ bool ACatsWarCharacter::Ammo()
 
 void ACatsWarCharacter::ReloadingPistol()
 {
-	if(PistolClip <= 0) return;
+	if(PistolClip <= 0)
+	{
+		UAudioComponent* AudioComponent = UGameplayStatics::SpawnSound2D(this, ShootCue[2], 1);
+		return;
+	}
 	
 	if(bReloading)
 	{
 		bReloading = false;
-		
+		UAudioComponent* AudioComponent = UGameplayStatics::SpawnSound2D(this, ShootCue[1], 1);
 		CallFunctionByNameWithArguments(TEXT("PistolReloadAnim"), ar, NULL, true);
 		GetWorld()->GetTimerManager().SetTimer(ReloadTimerHandle, [&]()
 		{
@@ -492,8 +496,8 @@ void ACatsWarCharacter::RestToDefaultParameters()
 
 void ACatsWarCharacter::Debug()
 {
-	//PistolClip++;
-	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("PistolClip = %f"), PistolClip));
+	PistolClip++;
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("PistolClip = %f"), PistolClip));
 	//UAudioComponent* AudioComponent = UGameplayStatics::SpawnSound2D(this, SoundCue[0], 1);
 
 

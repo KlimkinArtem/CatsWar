@@ -5,11 +5,13 @@
 #include "DrawDebugHelpers.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "Camera/CameraComponent.h"
+#include "Components/AudioComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Misc/OutputDeviceNull.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -287,6 +289,8 @@ void ACatsWarCharacter::PistolAttack()
 	Shoot.Broadcast();
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Bullet: %f"), Bullets));
 
+	UAudioComponent* AudioComponent = UGameplayStatics::SpawnSound2D(this, SoundCue[0], 1);
+	
 	MakeNoise(1, this, GetActorLocation(), 0, TEXT("Shoot"));
 	
 	FVector Start = FollowCamera->GetComponentLocation();
@@ -434,6 +438,7 @@ void ACatsWarCharacter::ReloadingPistol()
 }
 
 
+
 void ACatsWarCharacter::Zoom()
 {
 	CameraBoom->SetRelativeLocation(FVector(0.f, 100.f, 60.f));
@@ -487,8 +492,16 @@ void ACatsWarCharacter::RestToDefaultParameters()
 
 void ACatsWarCharacter::Debug()
 {
-	PistolClip++;
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("PistolClip = %f"), PistolClip));
+	//PistolClip++;
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("PistolClip = %f"), PistolClip));
+	//UAudioComponent* AudioComponent = UGameplayStatics::SpawnSound2D(this, SoundCue[0], 1);
+
+
+
+	
+	//AudioArray[0].GetDefaultObject()->Play();
+
+	
 	//bPistolMode ? PrintDebugMessage("true") : PrintDebugMessage("false");
 	
 	/*

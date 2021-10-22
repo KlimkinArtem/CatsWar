@@ -3,9 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-//#include "WPistol.h"
 #include "GameFramework/Character.h"
 #include "Misc/OutputDeviceNull.h"
+#include "Sound/SoundCue.h"
 #include "CatsWarCharacter.generated.h"
 
 DECLARE_DELEGATE_OneParam(FShakeDelegate, float)
@@ -61,7 +61,24 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FShootDelegate Shoot;
-	
+
+	UPROPERTY(EditAnywhere, Category = "Audio")
+	TArray<USoundCue*> SoundCue;
+
+	UPROPERTY(EditAnywhere, Category = "Audio")
+	TArray<USoundCue*> ShootCue;
+
+	UPROPERTY(EditAnywhere, Category = "Audio")
+	TArray<USoundCue*> PunchCue;
+
+	UPROPERTY(EditAnywhere, Category = "Audio")
+	TArray<USoundCue*> BatCue;
+
+	UPROPERTY(EditAnywhere, Category = "Audio")
+	TArray<USoundCue*> TakeDamageCue;
+
+	UPROPERTY(EditAnywhere, Category = "Audio")
+	TArray<USoundCue*> DeathCue;
 
 
 	UPROPERTY(BlueprintAssignable)
@@ -125,6 +142,7 @@ public:
 	
 	UPROPERTY(BlueprintReadOnly, Category="Animation mode")
 	bool bPistolMode = false;
+	
 
 	
 public:
@@ -201,10 +219,12 @@ private:
 
 	FTimerHandle ReloadTimerHandle;
 	bool bReloading = true;	
+
 	
 	EAttackType AttackType = EAttackType::HAND;
 
 	float HandsAndBatDamage = 5;
+	
 	/*void SpawnWeapon(FVector Location, FRotator Rotation, FName SocketName);
 	
 	AActor* Weapon;*/

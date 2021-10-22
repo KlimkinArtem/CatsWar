@@ -287,6 +287,7 @@ void ACatsWarCharacter::SpawnWeapon(FString SocketName, int32 WeaponIndex)
 void ACatsWarCharacter::PistolAttack()
 {
 	Shoot.Broadcast();
+	CameraSake(0.25f);
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Bullet: %f"), Bullets));
 
 	UAudioComponent* AudioComponent = UGameplayStatics::SpawnSound2D(this, ShootCue[0], 1);

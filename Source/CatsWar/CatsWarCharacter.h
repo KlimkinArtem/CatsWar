@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Cat_SaveGame.h"
 #include "GameFramework/Character.h"
 #include "Misc/OutputDeviceNull.h"
 #include "Sound/SoundCue.h"
@@ -227,6 +228,10 @@ private:
 	EAttackType AttackType = EAttackType::HAND;
 
 	float HandsAndBatDamage = 5;
+
+	void SaveGame();
+	void LoadGame();
+	
 
 
 	

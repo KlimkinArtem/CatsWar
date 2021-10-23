@@ -3,9 +3,7 @@
 #include "CatsWarCharacter.h"
 
 #include "DrawDebugHelpers.h"
-#include "HeadMountedDisplayFunctionLibrary.h"
 #include "Camera/CameraComponent.h"
-#include "Components/AudioComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -75,6 +73,9 @@ void ACatsWarCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerI
 	
 	PlayerInputComponent->BindAction("Attack", IE_Pressed, this, &ACatsWarCharacter::Attack);
 	PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &ACatsWarCharacter::ReloadingPistol);
+	
+	PlayerInputComponent->BindAction("Save", IE_Pressed, this, &ACatsWarCharacter::SaveGame);
+	PlayerInputComponent->BindAction("Load", IE_Pressed, this, &ACatsWarCharacter::LoadGame);
 
 	PlayerInputComponent->BindAction<FMaxSpeedDelegate>("MaxSpeed", IE_Pressed, this, &ACatsWarCharacter::SetMaxWalkSpeed, 600.f);
 	PlayerInputComponent->BindAction<FMaxSpeedDelegate>("MaxSpeed", IE_Released, this, &ACatsWarCharacter::SetMaxWalkSpeed, 150.f);
@@ -195,7 +196,8 @@ void ACatsWarCharacter::Boost(EBoost BOOST)
 			SetMaxWalkSpeed(1200.f);
 			bMaxSpeed = true;
 			break;
-			
+		default:
+			break;
 	}
 
 }
@@ -287,7 +289,7 @@ void ACatsWarCharacter::PistolAttack()
 	CameraSake(0.25f);
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Bullet: %f"), Bullets));
 
-	UAudioComponent* AudioComponent = UGameplayStatics::SpawnSound2D(this, ShootCue[0], 1);
+	UGameplayStatics::SpawnSound2D(this, ShootCue[0], 1);
 	
 	MakeNoise(1, this, GetActorLocation(), 0, TEXT("Shoot"));
 	
@@ -429,7 +431,7 @@ void ACatsWarCharacter::ReloadingPistol()
 		return;
 	}else if(PistolClip <= 0)
 	{
-		UAudioComponent* AudioComponent = UGameplayStatics::SpawnSound2D(this, ShootCue[2], 1);
+		UGameplayStatics::SpawnSound2D(this, ShootCue[2], 1);
 		return;
 	}
 	
@@ -443,10 +445,11 @@ void ACatsWarCharacter::ReloadingPistol()
 			bReloading = true;
 			PistolClip--;
 			Bullets = 15.f;
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("RELOAD WEPON after 3 seconds")));
 		}, ReloadTime, false);
 	}
 }
+
+
 
 void ACatsWarCharacter::DisablePlayerInput(float Time)
 {
@@ -516,27 +519,24 @@ void ACatsWarCharacter::Debug()
 {
 	PistolClip++;
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("PistolClip = %f"), PistolClip));
-	//UAudioComponent* AudioComponent = UGameplayStatics::SpawnSound2D(this, SoundCue[0], 1);
-
-
-
-	
-	//AudioArray[0].GetDefaultObject()->Play();
-
-	
-	//bPistolMode ? PrintDebugMessage("true") : PrintDebugMessage("false");
-	
-	/*
-	if(IsValid(Weapon))
-	{
-		PrintDebugMessage("true", 2.f, FColor::White);
-	}else
-	{
-		PrintDebugMessage("false", 2.f, FColor::White);
-	}
-	*/
 }
 
 
+void ACatsWarCharacter::SaveGame()
+{
+	UCat_SaveGame* SaveGameInstance = Cast<UCat_SaveGame>(UGameplayStatics::CreateSaveGameObject(UCat_SaveGame::StaticClass()));
+	SaveGameInstance->PlayerLocation = this->GetActorLocation();
+	UGameplayStatics::SaveGameToSlot(SaveGameInstance, TEXT("SaveSlot"), 0);
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Save Game")));
+}
+
+void ACatsWarCharacter::LoadGame()
+{
+	UCat_SaveGame* SaveGameInstance = Cast<UCat_SaveGame>(UGameplayStatics::CreateSaveGameObject(UCat_SaveGame::StaticClass()));
+	
+	SaveGameInstance = Cast<UCat_SaveGame>(UGameplayStatics::LoadGameFromSlot("SaveSlot", 0));
+	this->SetActorLocation(SaveGameInstance->PlayerLocation);
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Load Game")));
+}
 
 

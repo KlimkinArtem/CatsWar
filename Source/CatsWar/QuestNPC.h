@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CatsWarCharacter.h"
 #include "GameFramework/Actor.h"
 #include "QuestNPC.generated.h"
 
@@ -29,11 +30,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UBoxComponent* CollisionBox;
 
-
-private:
-	
-	
-	void OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-
+	UFUNCTION()
+	void OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 };
 

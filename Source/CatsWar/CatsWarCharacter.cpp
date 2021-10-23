@@ -298,6 +298,7 @@ void ACatsWarCharacter::PistolAttack()
 	
 	FVector End = ((FollowCameraForwardVector * 3000.f) + Start);
 	FCollisionQueryParams CollisionParams;
+	FActorSpawnParameters SpawnInfo;
 	CollisionParams.AddIgnoredActor(this);
 	
 	//DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 3, 0, 2);
@@ -317,6 +318,11 @@ void ACatsWarCharacter::PistolAttack()
 			}else if(OutHit.Actor->ActorHasTag("NPC"))
 			{
 				OutHit.GetActor()->TakeDamage(4.f, FDamageEvent(), GetController(), this);
+			}else if(OutHit.Actor->ActorHasTag("Destruction"))
+			{
+				AActor* RadialForceSpawn = GetWorld()->SpawnActor<AActor>(RadialForce,OutHit.ImpactPoint, FRotator::ZeroRotator, SpawnInfo);
+				RadialForceSpawn->Destroy();
+				//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Bottle!! %s"), *OutHit.ImpactPoint.ToString()));
 			}
 		}
 

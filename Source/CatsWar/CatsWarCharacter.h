@@ -169,6 +169,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category= "Weapons")
 	TArray<TSubclassOf<AActor>> Weapons;
 
+	UPROPERTY(EditDefaultsOnly, Category= "Destruction")
+	TSubclassOf<AActor> RadialForce;
+
 	UFUNCTION()
 	void DisablePlayerInput(float Time);
 

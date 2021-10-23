@@ -6,7 +6,7 @@
 AWPistol::AWPistol()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>("SkeletalMeshComponent");
 	RootComponent = SkeletalMeshComponent;
@@ -23,12 +23,6 @@ void AWPistol::BeginPlay()
 	Cat_Char->Shoot.AddDynamic(this, &AWPistol::Shoot);
 
 }
-
-void AWPistol::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
-
 
 
 void AWPistol::Shoot()

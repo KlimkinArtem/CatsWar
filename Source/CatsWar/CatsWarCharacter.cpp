@@ -19,6 +19,8 @@
 
 ACatsWarCharacter::ACatsWarCharacter()
 {
+	PrimaryActorTick.bCanEverTick = false;
+
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 
@@ -50,11 +52,6 @@ ACatsWarCharacter::ACatsWarCharacter()
 	FollowCamera->bUsePawnControlRotation = true; // Camera does not rotate relative to arm
 
 	//USkeletalMeshComponent* Mesh = GetMesh();
-}
-
-void ACatsWarCharacter::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
 }
 
 void ACatsWarCharacter::BeginPlay()
@@ -442,6 +439,17 @@ void ACatsWarCharacter::ReloadingPistol()
 	}
 }
 
+void ACatsWarCharacter::DisablePlayerInput(float Time)
+{
+	
+	DisableInput(GetWorld()->GetFirstPlayerController());
+
+	GetWorld()->GetTimerManager().SetTimer(ReloadTimerHandle, [&]()
+	{
+		EnableInput(GetWorld()->GetFirstPlayerController());
+	}, Time, false);
+	
+}
 
 
 void ACatsWarCharacter::Zoom()

@@ -10,7 +10,7 @@
 AQuestNPC::AQuestNPC()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>("SkeletalMeshComponent");
 	RootComponent = SkeletalMeshComponent;
@@ -37,17 +37,20 @@ void AQuestNPC::BeginPlay()
 void AQuestNPC::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 void AQuestNPC::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	const ACatsWarCharacter* Cat = Cast<ACatsWarCharacter>(OtherActor);
+	ACatsWarCharacter* Cat = Cast<ACatsWarCharacter>(OtherActor);
 	
 	if(Cat)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Black, FString::Printf(TEXT("Cat KEK")));
+		//UAudioComponent* AudioComponent = UGameplayStatics::SpawnSound2D(this, Dialogue[0], 1);
+		UAudioComponent* AudioComponent = UGameplayStatics::SpawnSoundAtLocation(this, Dialogue[0], GetActorLocation(),
+			FRotator::ZeroRotator, 1.f, 1.f, 0.0f, AttenuationSettings, nullptr, true);
+
+		Cat->DisablePlayerInput(5.f);
+
 	}
 }
-

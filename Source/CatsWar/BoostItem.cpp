@@ -9,7 +9,7 @@
 // Sets default values
 ABoostItem::ABoostItem()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 
 	

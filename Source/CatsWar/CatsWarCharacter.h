@@ -47,9 +47,7 @@ class ACatsWarCharacter : public ACharacter
 	class UCameraComponent* FollowCamera;
 public:
 	ACatsWarCharacter();
-
-	virtual void Tick(float DeltaTime) override;
-
+	
 	virtual  void BeginPlay() override;
 	
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
@@ -171,7 +169,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category= "Weapons")
 	TArray<TSubclassOf<AActor>> Weapons;
 
-
+	UFUNCTION()
+	void DisablePlayerInput(float Time);
 
 private:
 
@@ -202,7 +201,7 @@ private:
 	void Zoom();
 	void Unzoom();
 
-	void ApplyDamage(float Damage);
+
 	
 	void PistolAttack();
 	
@@ -213,7 +212,7 @@ private:
 	void Attack();
 	bool Ammo();
 	void ReloadingPistol();
-	void ReloadingDelay();
+
 	float Bullets = 15.f;
 	float PistolClip = 5.f;
 	
@@ -225,6 +224,8 @@ private:
 	EAttackType AttackType = EAttackType::HAND;
 
 	float HandsAndBatDamage = 5;
+
+
 	
 	/*void SpawnWeapon(FVector Location, FRotator Rotation, FName SocketName);
 	

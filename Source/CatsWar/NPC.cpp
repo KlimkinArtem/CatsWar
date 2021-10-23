@@ -27,16 +27,6 @@ ANPC::ANPC()
 void ANPC::BeginPlay()
 {
 	Super::BeginPlay();
-
-	//for (int i = 10; i <= SpawnTargets.Num(), i++);
-
-	for (auto& Target : SpawnTargets)
-	{
-		//SpawnTargetPoint = Cast<ASpawnTargetPoint>(Target);
-		//FVector loc = SpawnTargetPoint->GetActorLocation();
-		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Health: %s"), *loc.ToString()));
-
-	}
 }
 
 // Called every frame

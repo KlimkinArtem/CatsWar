@@ -424,7 +424,10 @@ bool ACatsWarCharacter::Ammo()
 
 void ACatsWarCharacter::ReloadingPistol()
 {
-	if(PistolClip <= 0)
+	if(AttackType != PISTOL)
+	{
+		return;
+	}else if(PistolClip <= 0)
 	{
 		UAudioComponent* AudioComponent = UGameplayStatics::SpawnSound2D(this, ShootCue[2], 1);
 		return;

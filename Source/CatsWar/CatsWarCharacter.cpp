@@ -394,6 +394,15 @@ void ACatsWarCharacter::Death()
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetMesh()->SetAllBodiesSimulatePhysics(true);
 	GetMesh()->SetAllBodiesPhysicsBlendWeight(1.f, false);
+
+
+	GetWorld()->GetTimerManager().SetTimer(ReloadTimerHandle, [&]()
+	{
+		GetWorld()->GetFirstPlayerController()->SetPause(true);
+		CallFunctionByNameWithArguments(TEXT("DeathMenu"), ar, NULL, true);
+	}, 5, false);
+
+	
 }
 
 void ACatsWarCharacter::Attack()
@@ -440,7 +449,7 @@ void ACatsWarCharacter::ReloadingPistol()
 	if(bReloading)
 	{
 		bReloading = false;
-		UAudioComponent* AudioComponent = UGameplayStatics::SpawnSound2D(this, ShootCue[1], 1);
+		UGameplayStatics::SpawnSound2D(this, ShootCue[1], 1);
 		CallFunctionByNameWithArguments(TEXT("PistolReloadAnim"), ar, NULL, true);
 		GetWorld()->GetTimerManager().SetTimer(ReloadTimerHandle, [&]()
 		{
@@ -534,7 +543,7 @@ void ACatsWarCharacter::SaveGame()
 
 void ACatsWarCharacter::LoadGame()
 {
-	UCat_SaveGame* SaveGameInstance = Cast<UCat_SaveGame>(UGameplayStatics::CreateSaveGameObject(UCat_SaveGame::StaticClass()));
+	const UCat_SaveGame* SaveGameInstance = Cast<UCat_SaveGame>(UGameplayStatics::CreateSaveGameObject(UCat_SaveGame::StaticClass()));
 	
 	SaveGameInstance = Cast<UCat_SaveGame>(UGameplayStatics::LoadGameFromSlot("SaveSlot", 0));
 	this->SetActorLocation(SaveGameInstance->PlayerLocation);
@@ -550,6 +559,11 @@ void ACatsWarCharacter::Drug()
 	{
 		//do something
 	}
+}
+
+void ACatsWarCharacter::GetAmmo()
+{
+	PistolClip++;
 }
 
 

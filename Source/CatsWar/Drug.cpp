@@ -30,12 +30,7 @@ void ADrug::BeginPlay()
 	
 }
 
-// Called every frame
-void ADrug::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
 
-}
 
 void ADrug::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

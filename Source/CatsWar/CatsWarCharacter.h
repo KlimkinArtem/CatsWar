@@ -87,8 +87,13 @@ public:
 	
 	void Drug();
 
+	void GetAmmo();
+
 	UPROPERTY(BlueprintReadOnly)
 	float DrugCount = 0;
+
+	UPROPERTY(BlueprintReadOnly)
+	float PistolClip = 5.f;
 	
 protected:
 	
@@ -109,10 +114,7 @@ protected:
 	 * @param Rate	This is a normalized rate, i.e. 1.0 means 100% of desired turn rate
 	 */
 	void LookUpAtRate(float Rate);
-
-
-
-protected:
+	
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	// End of APawn interface
@@ -125,7 +127,6 @@ public:
 
 	void PrintDebugMessage(FString Message = "Hello", float TimeToDisplay = 1.f, FColor Color = FColor::Red);
 
-public:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UMatineeCameraShake> CamShake;
 
@@ -149,9 +150,7 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category="Animation mode")
 	bool bPistolMode = false;
 	
-
 	
-public:
 	UFUNCTION()
 	void CameraSake(float Scale);
 
@@ -224,7 +223,7 @@ private:
 	void ReloadingPistol();
 
 	float Bullets = 15.f;
-	float PistolClip = 5.f;
+
 	
 
 	FTimerHandle ReloadTimerHandle;

@@ -12,7 +12,7 @@
 ANPC::ANPC()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("CollisionBox"));
 	CollisionBox->SetBoxExtent(FVector(32.f, 32.f, 32.f));
@@ -29,12 +29,6 @@ void ANPC::BeginPlay()
 	Super::BeginPlay();
 }
 
-// Called every frame
-void ANPC::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
 
 // Called to bind functionality to input
 void ANPC::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

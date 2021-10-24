@@ -83,6 +83,12 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FEnemyAttackDelegate EnemyAttackDelegate;
+
+	
+	void Drug();
+
+	UPROPERTY(BlueprintReadOnly)
+	float DrugCount = 0;
 	
 protected:
 	
@@ -231,7 +237,8 @@ private:
 
 	void SaveGame();
 	void LoadGame();
-	
+
+
 
 
 	

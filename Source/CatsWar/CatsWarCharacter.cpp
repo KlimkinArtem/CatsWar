@@ -110,6 +110,8 @@ void ACatsWarCharacter::LookUpAtRate(float Rate)
 	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
 }
 
+
+
 void ACatsWarCharacter::MoveForward(float Value)
 {
 	if ((Controller != nullptr) && (Value != 0.0f))
@@ -537,6 +539,17 @@ void ACatsWarCharacter::LoadGame()
 	SaveGameInstance = Cast<UCat_SaveGame>(UGameplayStatics::LoadGameFromSlot("SaveSlot", 0));
 	this->SetActorLocation(SaveGameInstance->PlayerLocation);
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Load Game")));
+}
+
+
+void ACatsWarCharacter::Drug()
+{
+	DrugCount += 1;
+
+	if(DrugCount >= 10)
+	{
+		//do something
+	}
 }
 
 

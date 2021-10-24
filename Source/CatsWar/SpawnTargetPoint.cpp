@@ -46,13 +46,8 @@ void ASpawnTargetPoint::SpawnTimer()
 
 void ASpawnTargetPoint::Spawn()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Distance = %f"), GetDistanceTo(Cat_Char)));
 	if(GetDistanceTo(Cat_Char) <= Distance) return;
 	FActorSpawnParameters SpawnInfo;
 	GetWorld()->SpawnActor<AActor>(SpawnActors[0], GetActorLocation(), GetActorRotation(), SpawnInfo);
-
-
-
-	
 }
 

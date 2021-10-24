@@ -63,7 +63,7 @@ public:
 	FShootDelegate Shoot;
 
 	UPROPERTY(EditAnywhere, Category = "Audio")
-	TArray<USoundCue*> SoundCue;
+	TArray<USoundCue*> OtherSoundCue;
 
 	UPROPERTY(EditAnywhere, Category = "Audio")
 	TArray<USoundCue*> ShootCue;
@@ -72,15 +72,8 @@ public:
 	TArray<USoundCue*> PunchCue;
 
 	UPROPERTY(EditAnywhere, Category = "Audio")
-	TArray<USoundCue*> BatCue;
-
-	UPROPERTY(EditAnywhere, Category = "Audio")
 	TArray<USoundCue*> TakeDamageCue;
-
-	UPROPERTY(EditAnywhere, Category = "Audio")
-	TArray<USoundCue*> DeathCue;
-
-
+	
 	UPROPERTY(BlueprintAssignable)
 	FEnemyAttackDelegate EnemyAttackDelegate;
 

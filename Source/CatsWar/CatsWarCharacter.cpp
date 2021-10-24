@@ -362,12 +362,16 @@ void ACatsWarCharacter::MeleAttack(float Radius, int32 Segments)
 					//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Hit Result: %s"), *Hit.Actor->GetName()));
 
 
+					
+
 					Hit.GetActor()->TakeDamage(HandsAndBatDamage, FDamageEvent(), GetController(), this);
 					
 				}else if(Hit.Actor->ActorHasTag("NPC"))
 				{
 					Hit.GetActor()->TakeDamage(1.f, FDamageEvent(), GetController(), this);
 				}
+
+				UGameplayStatics::SpawnSound2D(this, PunchCue[0], 1);
 			}						
 		}
 	}
@@ -394,7 +398,7 @@ void ACatsWarCharacter::Death()
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetMesh()->SetAllBodiesSimulatePhysics(true);
 	GetMesh()->SetAllBodiesPhysicsBlendWeight(1.f, false);
-
+	UGameplayStatics::SpawnSound2D(this, TakeDamageCue[0], 1);
 
 	GetWorld()->GetTimerManager().SetTimer(ReloadTimerHandle, [&]()
 	{
@@ -554,6 +558,7 @@ void ACatsWarCharacter::LoadGame()
 void ACatsWarCharacter::Drug()
 {
 	DrugCount += 1;
+	UGameplayStatics::SpawnSound2D(this, OtherSoundCue[0], 1);
 
 	if(DrugCount >= 10)
 	{
@@ -564,6 +569,7 @@ void ACatsWarCharacter::Drug()
 void ACatsWarCharacter::GetAmmo()
 {
 	PistolClip++;
+	UGameplayStatics::SpawnSound2D(this, ShootCue[3], 1);
 }
 
 
